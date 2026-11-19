@@ -68,7 +68,7 @@
     location.href = `${BASE}demo-data/reports/${link.getAttribute("href").split("/").pop()}.zip`;
   }, true);
 
-  // 데모 표시: 로고 옆 작은 표시(GitHub 링크)와, 처음 열 때 잠깐 뜨는 안내. 화면의 다른 패널을 가리지 않게 둔다
+  // 데모 표시: 로고 옆 작은 표시(GitHub 링크). 마우스를 올리면 설명이 뜬다. 화면의 다른 패널을 가리지 않게 둔다
   const style = document.createElement("style");
   style.textContent = `
     .demo-badge { margin-left: 4px; padding: 3px 9px; border-radius: 999px; background: #1a4fa8; color: #fff !important; font-size: 11.5px; font-weight: 800; text-decoration: none; white-space: nowrap; }
@@ -81,6 +81,5 @@
     const badge = Object.assign(document.createElement("a"), { className: "demo-badge", href: GITHUB, target: "_blank", rel: "noopener", textContent: "데모 · GitHub",
       title: "보기 전용 데모입니다. 공개 실데이터(최근 3개월)로 미리 계산한 화면이며, Agent 답은 실제 Claude 로 받은 답을 다시 보여 줍니다." });
     document.getElementById("data-toggle")?.before(badge);
-    setTimeout(() => toast("보기 전용 데모입니다. 공개 실데이터(최근 3개월)로 미리 계산했고, Agent 답은 실제 Claude 답을 다시 보여 줍니다."), 1200);
   });
 })();
