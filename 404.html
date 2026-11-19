@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PLaiJeju 데모 · 제주 관광 낙수 진단</title>
+  <script src="/demo/shim.js"></script>
+  <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+  <link rel="stylesheet" href="/static/app.css?v=demo">
+  <script type="importmap">{ "imports": {
+    "three": "/static/vendor/three.module.min.js",
+    "/static/scene.js": "/static/scene.js?v=demo",
+    "/static/areas.js": "/static/areas.js?v=demo",
+    "/static/props.js": "/static/props.js?v=demo",
+    "/static/city.js": "/static/city.js?v=demo"
+  } }</script>
+</head>
+<body class="mode-intro">
+  <canvas id="scene" aria-label="제주 섬 지도. 기둥과 라벨 하나가 지역 하나이고, 기둥의 높이와 색이 지표 값입니다."></canvas>
+  <div class="scrim" aria-hidden="true"></div>
+  <div id="labels" class="map-labels"></div>
+
+  <header class="top">
+    <div class="glass brand">
+      <h1><button id="home" class="brand__home" type="button" title="메인 화면으로">
+        <img class="brand__mark" src="/static/logo.svg" alt="" width="40" height="40">
+        <span class="brand__text"><span class="brand__word" aria-label="PLaiJeju">PL<em>ai</em>Jeju</span><span class="brand__sub">제주 관광 낙수 진단</span></span>
+      </button></h1>
+      <span id="mock-badge" class="badge" hidden title="수치는 난수로 만든 것이며 실제 통계가 아닙니다">가상 데이터</span>
+      <button id="data-toggle" class="chip" type="button" aria-controls="data-panel" aria-expanded="true">데이터</button>
+    </div>
+    <div id="tiles" class="glass tiles"></div>
+  </header>
+
+  <aside id="data-panel" class="glass data" aria-labelledby="data-heading">
+    <h2 id="data-heading">불러온 데이터</h2>
+    <ul id="datasets" class="datasets"></ul>
+    <label id="drop" class="drop">
+      <input id="files" type="file" accept=".csv" multiple>
+      <b>CSV 불러오기</b>
+      <span>센터에서 받은 파일을 여기로 끌어 놓거나 눌러서 고르세요. 파일 종류는 자동으로 구분합니다.</span>
+    </label>
+    <button id="mock" class="link" type="button">가상 데이터 불러오기</button>
+    <ul id="log" class="log" aria-live="polite"></ul>
+    <p class="privacy">불러온 데이터는 이 PC 메모리에만 두며, 프로그램을 닫으면 지워집니다.</p>
+  </aside>
+
+  <section id="board" class="glass board" hidden>
+    <nav id="tabs" class="tabs" aria-label="진단 지표"></nav>
+    <div id="meta" class="meta"></div>
+    <div id="highlights" class="highlights"></div>
+    <div id="legend" class="legend"></div>
+    <div id="rows-head" class="rows__head"></div>
+    <ul id="rows" class="rows"></ul>
+    <p id="notes" class="notes"></p>
+  </section>
+
+  <form id="question" class="glass question" aria-label="진단 조건" hidden>
+    <label><span>기준 월</span><select id="month"></select></label>
+    <label><span>지역 단위</span><select id="level"></select></label>
+    <label><span>업종</span><select id="biz"></select></label>
+    <label><span>이용자</span><select id="segment"></select></label>
+  </form>
+
+  <aside id="dong-card" class="glass dong-card" hidden aria-live="polite" aria-label="동네 진단"></aside>
+
+  <section id="ask" class="glass ask" hidden aria-label="질문하기">
+    <div id="answer" class="answer" hidden>
+      <button id="answer-close" class="answer__close" type="button" aria-label="답변 닫기">×</button>
+      <p id="answer-title" class="answer__title" hidden></p>
+      <ul id="steps" class="steps"></ul>
+      <p id="answer-text" class="answer__text" aria-live="polite"></p>
+      <p id="answer-note" class="answer__note" hidden></p>
+      <p id="answer-warn" class="answer__warn" hidden></p>
+      <p id="answer-sources" class="answer__sources" hidden></p>
+      <a id="answer-report" class="answer__report" hidden>보고서 내려받기 (PDF, 차트)</a>
+      <p id="answer-thread" class="answer__thread" hidden></p>
+    </div>
+    <div id="examples" class="examples" aria-label="자주 묻는 질문"></div>
+    <form id="ask-form" class="ask__form">
+      <input id="ask-input" type="text" autocomplete="off" aria-label="질문" placeholder="예: 연동 면세점 매출은 작년보다 늘었나요?">
+      <button id="ask-send" class="primary" type="submit">질문</button>
+    </form>
+    <p class="ask__how"><b>✦ Agent</b> 계획을 세우고, 계산 도구를 부르고, 답의 수치를 계산 결과와 대조해 검증합니다. 답마다 반출용 보고서를 받을 수 있습니다.</p>
+  </section>
+
+  <section id="empty" class="intro" hidden aria-labelledby="intro-title">
+    <p class="intro__kicker" style="--d:0"><span class="intro__dot"></span>제주빅데이터센터 데이터<i></i>관광 소비 분석</p>
+    <h2 id="intro-title" class="intro__title" style="--d:1">배는 오는데,<br><em>돈은 어느 동네에</em><br>떨어질까</h2>
+    <p class="intro__lead" style="--d:2">관광객 카드 소비와 유동인구를 동네별로 맞춰 봅니다. 사람은 늘었는데 매출은 그대로인 곳을 수치로 찾고, 센터 반출 기준에 맞춘 보고서로 내려받습니다.</p>
+    <dl class="intro__stats" style="--d:3">
+      <div><dt>크루즈 관광객 1인당 지출</dt><dd><b>188</b><i aria-label="에서">→</i><b>122</b><small>달러</small></dd><span>2023년 → 2025년</span></div>
+      <div><dt>2026년 크루즈 관광객</dt><dd><b>80</b><small>만 명</small></dd><span>2023년의 8배 (전망)</span></div>
+      <div class="is-down"><dt>내국인 관광객</dt><dd><b>−12.9</b><small>%</small></dd><span>2026년 10월 · 외국인 +10%</span></div>
+    </dl>
+    <div class="intro__actions" style="--d:4">
+      <button id="mock-start" class="intro__primary" type="button">가상 데이터로 시작<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button id="intro-data" class="intro__ghost" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V4m-4 4 4-4 4 4M4 15v1h12v-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>센터 CSV 불러오기</button>
+    </div>
+    <div class="intro__features" style="--d:5" role="group" aria-label="바로 해 보기">
+      <button type="button" data-feature="ask"><i aria-hidden="true">💬</i><b>말로 묻기</b><span>계산·검증한 답</span></button>
+      <button type="button" data-feature="brief"><i aria-hidden="true">✦</i><b>자동 브리핑</b><span>문제 동네 찾기</span></button>
+      <button type="button" data-feature="dong"><i aria-hidden="true">📍</i><b>동네 진단 카드</b><span>지표를 한 장에</span></button>
+      <button type="button" data-feature="compare"><i aria-hidden="true">⚖️</i><b>두 동네 비교</b><span>나란히 보기</span></button>
+    </div>
+    <p class="intro__hint" style="--d:5"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 3.5v8.2l-1.6-1.6a1.4 1.4 0 0 0-2 2l3.6 3.9h7.1l1.1-5.6a1.5 1.5 0 0 0-1.2-1.7l-4.2-.8V3.5a1.4 1.4 0 0 0-2.8 0Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span><b>지도에서 지명을 누르면 그 지역으로 확대됩니다.</b> 제주시·서귀포·중문은 건물까지 표시됩니다.</span></p>
+    <div class="intro__foot" style="--d:6">
+      <details class="intro__needed">
+        <summary>필요한 데이터 15종</summary>
+        <ul id="needed" class="needed"></ul>
+        <p>전년 같은 달과 비교하므로 보고 싶은 달과 1년 전 같은 달이 함께 필요합니다. 공개 데이터는 프로그램에 들어 있습니다: 제주관광공사 지역별 소비·방문객(2026년 9월까지), 관광객 입도통계(2026년 9월까지), 크루즈 입항 실적(2025년 5월까지), 소상공인 상가 매장 수(2026년 9월 기준). 센터 데이터를 넣으면 그쪽을 먼저 씁니다.</p>
+      </details>
+      <p class="intro__source">수치 출처: 제주도 방문관광객 실태조사·크루즈 전망, 제주도관광협회 입도 통계(2026). 지도 위 수치는 넣은 데이터로 계산합니다.</p>
+    </div>
+  </section>
+
+  <aside id="place-card" class="glass place-card" hidden aria-live="polite" aria-label="이곳의 관광 소비"></aside>
+
+  <button id="zoom-back" class="zoom-back glass" type="button" hidden><span class="zoom-back__arrow" aria-hidden="true">←</span> <b></b> <span class="zoom-back__all">섬 전체 보기</span><kbd>Esc</kbd></button>
+  <p class="attribution">지형 Terrain Tiles(NASA SRTM 등) · 도심 건물·도로 © OpenStreetMap 기여자</p>
+
+  <script type="module" src="/static/app.js?v=demo"></script>
+</body>
+</html>

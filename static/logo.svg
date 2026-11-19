@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="PLaiJeju">
+  <title>PLaiJeju</title>
+  <defs>
+    <linearGradient id="pj-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6f5ff"/><stop offset="1" stop-color="#a8d8ff"/></linearGradient>
+    <linearGradient id="pj-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d8ff2"/><stop offset="1" stop-color="#1a4fa8"/></linearGradient>
+    <linearGradient id="pj-land" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7bd690"/><stop offset="1" stop-color="#2e9459"/></linearGradient>
+    <radialGradient id="pj-gyul" cx="0.36" cy="0.34" r="0.72"><stop offset="0" stop-color="#ffc56e"/><stop offset="1" stop-color="#ff7a1a"/></radialGradient>
+    <clipPath id="pj-clip"><rect width="48" height="48" rx="13"/></clipPath>
+  </defs>
+  <g clip-path="url(#pj-clip)">
+    <rect width="48" height="48" fill="url(#pj-sky)"/>
+    <circle cx="35.5" cy="13.5" r="6.4" fill="url(#pj-gyul)"/>
+    <path d="M35.4 7.3c1.5-2.5 4.2-3.3 6.2-2.6-.6 2.3-3.1 3.9-6.2 2.6z" fill="#37a85c"/>
+    <!-- 한라산: 완만한 순상 화산과 꼭대기의 백록담 -->
+    <path d="M-2 35C6 31.2 11.5 26 17.5 22.9c1.9-1 3.6-1.5 5.2-1.6h2.6c1.6.1 3.3.6 5.2 1.6C36.5 26 42 31.2 50 35z" fill="url(#pj-land)"/>
+    <ellipse cx="24" cy="21.9" rx="3.9" ry="1.25" fill="#2a8551"/>
+    <ellipse cx="24" cy="22.05" rx="2.5" ry="0.68" fill="#8fdcff"/>
+    <!-- 산기슭 귤밭 -->
+    <g fill="#ff9330"><circle cx="11.6" cy="30.4" r="1"/><circle cx="14.6" cy="28.6" r="1"/><circle cx="33.6" cy="28.7" r="1"/><circle cx="36.8" cy="30.5" r="1"/></g>
+    <path d="M0 33.6c6-2.6 10 2.2 16 .2s10-2.6 16 0 10 2.4 16 0V48H0z" fill="url(#pj-sea)"/>
+    <path d="M7 40.2c2.8-1.5 4.8 1.5 7.6 0M27.5 42.4c2.8-1.5 4.8 1.5 7.6 0" fill="none" stroke="#fff" stroke-opacity="0.6" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+  <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="12.4" fill="none" stroke="#fff" stroke-opacity="0.9" stroke-width="1.5"/>
+</svg>
