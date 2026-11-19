@@ -118,7 +118,7 @@
 ### 판단은 Claude 가, 계산과 통제는 코드가
 
 ```mermaid
-flowchart LR
+flowchart TD
     U["이용자<br/>질문 · 센터 CSV"] --> C["Claude<br/>계획 · 도구 선택 · 해석"]
     C -- 도구 호출 --> T["도구 7종<br/>scan_issues · compute_metric<br/>trend · compare_periods · place_summary"]
     T --> DB[("메모리 DB<br/>센터 CSV + 공개 실데이터")]
