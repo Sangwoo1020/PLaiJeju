@@ -2,10 +2,11 @@
 // tools/build_static_demo.py 가 demo/shim.js 로 복사해 index.html 맨 앞에서 불러온다. 실제 프로그램에서는 쓰이지 않는다.
 (() => {
   const realFetch = window.fetch.bind(window);
+  const BASE = new URL("..", document.currentScript.src).pathname;   // 사이트가 놓인 경로 (예: /PLaiJeju/)
   const GITHUB = "https://github.com/Sangwoo1020/PLaiJeju";
   let indexPromise;
-  const index = () => (indexPromise ||= realFetch("/demo-data/index.json").then((r) => r.json()));
-  const load = async (key) => { const file = (await index())[key]; return file ? (await realFetch(`/demo-data/${file}`)).json() : null; };
+  const index = () => (indexPromise ||= realFetch(`${BASE}demo-data/index.json`).then((r) => r.json()));
+  const load = async (key) => { const file = (await index())[key]; return file ? (await realFetch(`${BASE}demo-data/${file}`)).json() : null; };
   const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
   const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
   const stream = (events, gap = 550) => new Response(new ReadableStream({
@@ -64,7 +65,7 @@
     const link = event.target.closest?.("a[href^='/api/report/']");
     if (!link) return;
     event.preventDefault();
-    location.href = `/demo-data/reports/${link.getAttribute("href").split("/").pop()}.zip`;
+    location.href = `${BASE}demo-data/reports/${link.getAttribute("href").split("/").pop()}.zip`;
   }, true);
 
   // 데모 표시: 로고 옆 작은 표시(GitHub 링크)와, 처음 열 때 잠깐 뜨는 안내. 화면의 다른 패널을 가리지 않게 둔다

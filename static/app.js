@@ -1,6 +1,6 @@
 // 화면 동작: 데이터 넣기 → 조건 고르기 → 섬 위 기둥과 오른쪽 목록으로 진단 보여주기
-import { createScene } from "/static/scene.js";
-import { locate } from "/static/areas.js";
+import { createScene } from "/PLaiJeju/static/scene.js";
+import { locate } from "/PLaiJeju/static/areas.js";
 
 const $ = (id) => document.getElementById(id);
 const COLUMN_WIDTH = { bjd: 0.85, emd: 1.1, dstrct_se: 2.0, city: 2.8, all: 3.2 };
@@ -678,11 +678,11 @@ let placeAsk = 0;
 
 // 장소 사진(위키미디어 공용의 자유 라이선스 사진). 프로그램에 들어 있어 인터넷 없이 보인다. 사진이 없는 곳은 카드가 사진 없이 뜬다
 let placePhotos = {};
-fetch("/static/places/photos.json").then((r) => (r.ok ? r.json() : {})).then((list) => { placePhotos = list; }).catch(() => {});
+fetch("/PLaiJeju/static/places/photos.json").then((r) => (r.ok ? r.json() : {})).then((list) => { placePhotos = list; }).catch(() => {});
 function placePhoto(name, head) {
   const photo = placePhotos[name];
   if (!photo) return null;
-  const image = el("img", { src: `/static/places/${photo.file}`, alt: `${name} 사진`, loading: "lazy", decoding: "async" });
+  const image = el("img", { src: `/PLaiJeju/static/places/${photo.file}`, alt: `${name} 사진`, loading: "lazy", decoding: "async" });
   const figure = el("figure", { class: "place-card__photo" }, image, head,
     el("figcaption", { title: `${photo.title} · ${photo.source}`, text: `사진: ${photo.author} · ${photo.license}` }));
   image.addEventListener("error", () => { figure.before(head); figure.remove(); });   // 파일이 없으면 사진 없는 카드로 되돌린다

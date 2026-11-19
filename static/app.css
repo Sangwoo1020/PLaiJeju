@@ -1,6 +1,6 @@
 /* 제주 관광 낙수 진단 — 밝은 하늘 위에 떠 있는 섬 디오라마, 3D 기둥과 유리 패널 */
 /* 글꼴: Pretendard (SIL OFL 1.1, fonts/PRETENDARD_LICENSE.txt). 센터 PC 에서도 같은 모양이 나오도록 프로그램에 넣었다 */
-@font-face { font-family: "Pretendard"; src: url("/static/fonts/PretendardVariable.woff2") format("woff2-variations"), url("/static/fonts/PretendardVariable.woff2") format("woff2"); font-weight: 45 920; font-display: swap; }
+@font-face { font-family: "Pretendard"; src: url("/PLaiJeju/static/fonts/PretendardVariable.woff2") format("woff2-variations"), url("/PLaiJeju/static/fonts/PretendardVariable.woff2") format("woff2"); font-weight: 45 920; font-display: swap; }
 :root {
   --ink: #1b2a3b;
   --ink-soft: #55677d;

@@ -2,10 +2,10 @@
 // 카메라는 "연출"을 한다: 시작 화면에서는 섬을 천천히 돌고, 지표를 바꾸면 지표마다 정해 둔 구도로 날아가며,
 // 지역을 고르면 그 동네로 내려간다. 이용자가 끌거나 휠을 굴리면 그때부터는 이용자가 카메라를 잡는다.
 import * as THREE from "three";
-import { OrbitControls } from "/static/vendor/OrbitControls.js";
-import { CENTER, HALLASAN, ISLETS } from "/static/areas.js";
-import { loadProps } from "/static/props.js";
-import { buildCity, LANDMARK_KINDS } from "/static/city.js";
+import { OrbitControls } from "/PLaiJeju/static/vendor/OrbitControls.js";
+import { CENTER, HALLASAN, ISLETS } from "/PLaiJeju/static/areas.js";
+import { loadProps } from "/PLaiJeju/static/props.js";
+import { buildCity, LANDMARK_KINDS } from "/PLaiJeju/static/city.js";
 
 const SCALE = 46;               // 경도 1도 = 46 단위
 const LAT_STRETCH = 1.19;       // 북위 33도에서 위도 1도는 경도 1도보다 길다
@@ -61,8 +61,8 @@ function random(seed) {   // 고정 난수 (매번 같은 잔물결이 나오도
 
 async function loadTerrain() {
   const [meta, buffer] = await Promise.all([
-    fetch("/static/jeju_terrain.json").then((response) => response.json()),
-    fetch("/static/jeju_terrain.bin").then((response) => response.arrayBuffer()),
+    fetch("/PLaiJeju/static/jeju_terrain.json").then((response) => response.json()),
+    fetch("/PLaiJeju/static/jeju_terrain.bin").then((response) => response.arrayBuffer()),
   ]);
   const grid = new Int16Array(buffer), { columns, rows, cell } = meta;
   const width = (columns - 1) * cell, depth = (rows - 1) * cell;
@@ -442,7 +442,7 @@ export async function createScene(canvas, { labels }) {
 
   // ----- 도심의 실제 건물·도로 (OpenStreetMap). 섬이 먼저 뜨도록 나중에 불러온다 -----
   let city = null;
-  fetch("/static/jeju_city.json").then((response) => (response.ok ? response.json() : null)).then((data) => {
+  fetch("/PLaiJeju/static/jeju_city.json").then((response) => (response.ok ? response.json() : null)).then((data) => {
     if (!data) return;
     city = buildCity(data, { scale: SCALE, latStretch: LAT_STRETCH, heightAt });
     world.add(city.group);

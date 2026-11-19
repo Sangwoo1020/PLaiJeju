@@ -8,9 +8,9 @@
 //   rotorNode: 풍력발전기의 회전 부품 이름. 있으면 날개가 돌아간다.
 //   tint:      모델 전체를 이 색으로 칠한다 (돌을 제주 현무암 색으로 바꿀 때).
 import * as THREE from "three";
-import { GLTFLoader } from "/static/vendor/loaders/GLTFLoader.js";
+import { GLTFLoader } from "/PLaiJeju/static/vendor/loaders/GLTFLoader.js";
 
-const BASE = "/static/props/";
+const BASE = "/PLaiJeju/static/props/";
 // Kenney 모델의 청록빛 잎을 제주 풍경에 맞는 초록으로 바꾼다 (재질 이름 기준)
 const RECOLOR = { leafsGreen: "#5aa55c", leafsDark: "#3f8a58", grass: "#78b868", woodBark: "#8a6a50", woodBarkDark: "#6f5646" };
 
