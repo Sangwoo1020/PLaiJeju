@@ -17,7 +17,7 @@
 ![three.js](https://img.shields.io/badge/three.js-3D%20island-000000?style=flat-square&logo=threedotjs&logoColor=white)
 ![tests](https://img.shields.io/badge/tests-100%20passed-2EA44F?style=flat-square)
 
-### 🌐 [라이브 데모 · dataplaylabs.site](https://dataplaylabs.site)
+### 🌐 [라이브 데모 · dataplaylabs.site](https://dataplaylabs.site) &nbsp;·&nbsp; ▶️ [시연 영상 (2분)](https://youtu.be/59jrutAWstA)
 
 <sub>설치 없이 브라우저에서 바로 실제 Agent 에게 질문해 볼 수 있습니다 (하루 20건, 한 사람당 5건)</sub>
 
@@ -32,6 +32,8 @@
 <br>
 
 <img src="docs/assets/app_intro.png" alt="PLaiJeju 시작 화면. 3D 제주 섬과 크루즈 터미널" width="100%">
+
+<p align="center"><a href="https://youtu.be/59jrutAWstA"><img src="https://img.youtube.com/vi/59jrutAWstA/hqdefault.jpg" width="480" alt="시연 영상 보기"></a><br><sub>▶️ 시연 영상 보기: 실제 Claude 호출로 질문부터 보고서까지 (2분)</sub></p>
 
 <br>
 
