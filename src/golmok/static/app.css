@@ -367,6 +367,13 @@ body.dong-open .examples button:not(.examples__brief) { display: none; }   /* Îè
 .step--check .step__tag { background: #e3f4ec; color: #22865c; }
 .step--check.is-warn .step__tag { background: var(--alert-tint); color: var(--alert-ink); }
 .steps li:last-child { animation: fade-in 0.35s ease both; }
+.progress { display: grid; gap: 4px; margin: 2px 0 10px; }
+.progress__bar { height: 4px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+.progress__bar i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #2a6fdb, #8b5fd3, #2a6fdb); background-size: 200% 100%; transition: width 1s linear; animation: progress-shine 1.8s linear infinite; }
+.progress__text { color: var(--ink-soft); font-size: 12px; font-variant-numeric: tabular-nums; }
+.progress.is-done .progress__bar { display: none; }
+.progress.is-done .progress__text { color: var(--ink-faint); }
+@keyframes progress-shine { from { background-position: 200% 0; } to { background-position: 0 0; } }
 .answer__title { margin: 0 0 6px; color: var(--ink); font-size: 15px; font-weight: 800; letter-spacing: -0.02em; }
 .answer__thread { display: flex; align-items: center; gap: 10px; margin: 6px 0 0; color: var(--ink-faint); font-size: 12px; }
 .examples .examples__brief { display: flex; align-items: center; gap: 6px; border-color: transparent; background: linear-gradient(135deg, #3b6fe0, #6b47c2); color: #fff; font-weight: 750; box-shadow: 0 6px 14px -8px rgba(59, 111, 224, 0.8); }

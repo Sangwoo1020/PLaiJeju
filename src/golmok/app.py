@@ -9,10 +9,12 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
 import threading
+import time
 import uuid
 from importlib import resources
 from pathlib import Path
@@ -20,7 +22,7 @@ from pathlib import Path
 import duckdb
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, Response, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -347,6 +349,39 @@ async def no_stale_static(request: Request, call_next):
     if request.url.path == "/" or request.url.path.startswith("/static/"):
         response.headers["Cache-Control"] = "no-cache"
     return response
+
+
+# ---------- 공개 인터넷 데모 서버 보호 (GOLMOK_PUBLIC_DEMO=1 일 때만. 센터 PC·제출본에서는 꺼져 있다) ----------
+PUBLIC_DEMO = os.environ.get("GOLMOK_PUBLIC_DEMO") == "1"
+DAILY_LIMIT = int(os.environ.get("GOLMOK_DAILY_LIMIT", "40"))   # 하루 전체 Agent 질문 수 (API 비용 보호)
+IP_LIMIT = int(os.environ.get("GOLMOK_IP_LIMIT", "8"))          # 한 사람(접속 주소)이 하루에 할 수 있는 질문 수
+demo_usage: dict = {"day": "", "total": 0, "by_ip": {}}
+
+
+def _demo_notice(text: str) -> Response:
+    event = {"type": "answer", "mode": "offline", "text": text, "note": "공개 데모 안내", "unverified": [], "sources": []}
+    return Response(json.dumps(event, ensure_ascii=False) + "\n", media_type="application/x-ndjson")
+
+
+@app.middleware("http")
+async def public_demo_guard(request: Request, call_next):
+    """공개 데모에서는 방문자 모두가 같은 데이터를 보므로 데이터를 바꾸지 못하게 하고, Agent 질문 수를 하루 단위로 제한한다."""
+    if PUBLIC_DEMO and request.method == "POST":
+        path = request.url.path
+        if path in ("/api/upload", "/api/load-mock"):
+            return JSONResponse({"detail": {"message": "공개 데모에서는 데이터를 바꿀 수 없습니다. 센터 CSV 넣기는 프로그램을 내려받아 해 보세요 (github.com/Sangwoo1020/PLaiJeju)."}}, status_code=403)
+        if path in ("/api/ask", "/api/brief"):
+            today = time.strftime("%Y-%m-%d", time.gmtime(time.time() + 9 * 3600))   # 한국 시각 기준 하루
+            if demo_usage["day"] != today:
+                demo_usage.update(day=today, total=0, by_ip={})
+            ip = request.headers.get("x-real-ip") or (request.client.host if request.client else "?")
+            if demo_usage["total"] >= DAILY_LIMIT:
+                return _demo_notice(f"오늘 공개 데모의 Agent 질문 {DAILY_LIMIT}건을 모두 썼습니다. 내일 다시 오시거나, 프로그램을 내려받아 직접 실행해 보세요 (github.com/Sangwoo1020/PLaiJeju). 시연 영상에서도 실제 질문 장면을 볼 수 있습니다.")
+            if demo_usage["by_ip"].get(ip, 0) >= IP_LIMIT:
+                return _demo_notice(f"공개 데모에서는 한 사람이 하루에 {IP_LIMIT}건까지 질문할 수 있습니다. 더 써 보시려면 프로그램을 내려받아 직접 실행해 보세요 (github.com/Sangwoo1020/PLaiJeju).")
+            demo_usage["total"] += 1
+            demo_usage["by_ip"][ip] = demo_usage["by_ip"].get(ip, 0) + 1
+    return await call_next(request)
 
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")

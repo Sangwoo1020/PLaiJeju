@@ -839,6 +839,36 @@ async function runBrief() {
   return streamAgent("/api/brief", null);
 }
 
+// Agent 가 일하는 동안 지난 시간과 예상 시간을 보여 준다 (질문 보통 20~40초, 자동 브리핑 1분 안팎)
+let activeProgress = null;
+function startProgress(brief) {
+  activeProgress?.stop();
+  const box = $("answer-progress"), bar = box.querySelector("i"), text = box.querySelector(".progress__text");
+  const expected = brief ? 60 : 30, range = brief ? "보통 1분 안팎" : "보통 20~40초";
+  const started = performance.now();
+  let steps = 0, checking = false;
+  const seconds = () => Math.round((performance.now() - started) / 1000);
+  const tick = () => {
+    const sec = seconds();
+    // 처음엔 빠르게, 예상 시간에 가까울수록 천천히 차오른다. 검증 단계에 들어가면 거의 끝
+    const ratio = checking ? 0.93 : Math.min(0.88, 1 - Math.exp((-1.6 * sec) / expected));
+    bar.style.width = `${Math.round(ratio * 100)}%`;
+    const phase = checking ? "답의 수치를 검증하는 중" : steps ? `${steps}단계 진행` : "계획을 세우는 중";
+    text.textContent = sec > expected * 2 ? `${phase} · ${sec}초 지남 · 평소보다 오래 걸립니다. 조금만 더 기다려 주세요` : `${phase} · ${sec}초 지남 · ${range} 걸립니다`;
+  };
+  box.hidden = false;
+  box.classList.remove("is-done");
+  tick();
+  const timer = setInterval(tick, 1000);
+  const progress = {
+    step(event) { steps += 1; if (event.kind === "check") checking = true; tick(); },
+    done() { clearInterval(timer); bar.style.width = "100%"; box.classList.add("is-done"); const sec = seconds(); text.textContent = sec < 1 ? "바로 답했습니다" : `${sec}초 걸려 답했습니다`; },
+    stop() { clearInterval(timer); box.hidden = true; },
+  };
+  activeProgress = progress;
+  return progress;
+}
+
 async function streamAgent(url, body) {
   const send = $("ask-send"), briefButton = $("brief");
   send.disabled = true;
@@ -849,6 +879,7 @@ async function streamAgent(url, body) {
   renderAnswer({ text: "", note: "", unverified: [], sources: [] });
   renderConversation(null);
   showAnswer(true);
+  const progress = startProgress(url === "/api/brief");
   try {
     const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : "{}" });
     if (!response.ok) throw new Error(url === "/api/brief" ? "브리핑을 만들지 못했습니다. 데이터를 확인해 주세요." : "질문을 처리하지 못했습니다. 다시 시도해 주세요.");
@@ -863,9 +894,10 @@ async function streamAgent(url, body) {
       buffer = lines.pop();
       for (const line of lines.filter(Boolean)) {
         const event = JSON.parse(line);
-        if (event.type === "step") renderStep(event);
+        if (event.type === "step") { renderStep(event); progress.step(event); }
         else {
           answered = true;
+          progress.done();
           renderAnswer(event);
           if (event.title) $("answer-title").textContent = event.title;
           if (event.conversation) {
@@ -883,6 +915,7 @@ async function streamAgent(url, body) {
     const lost = error instanceof TypeError || error.message === "답을 받지 못했습니다.";
     const note = lost ? "답을 받지 못했습니다. 프로그램 창(검은 창)이 닫혔다면 run.bat 을 다시 실행한 뒤 이 화면을 새로 고쳐 주세요." : error.message;
     renderAnswer({ text: "", note, unverified: [], sources: [] });
+    progress.stop();
   } finally {
     send.disabled = false;
     if (briefButton) briefButton.disabled = false;

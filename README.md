@@ -17,6 +17,12 @@
 ![three.js](https://img.shields.io/badge/three.js-3D%20island-000000?style=flat-square&logo=threedotjs&logoColor=white)
 ![tests](https://img.shields.io/badge/tests-100%20passed-2EA44F?style=flat-square)
 
+### 🌐 [라이브 데모 · dataplaylabs.site](https://dataplaylabs.site)
+
+<sub>설치 없이 브라우저에서 바로 실제 Agent 에게 질문해 볼 수 있습니다 (하루 20건, 한 사람당 5건)</sub>
+
+<br>
+
 [기획서 PDF](docs/기획서_DataPlayLabs.pdf) · [설치·실행 안내](docs/설치_실행_안내.md) · [사용자 매뉴얼](docs/사용자_매뉴얼.md) · [데이터 활용 명세](docs/데이터_활용_명세.md) · [결과 설명자료](docs/결과_설명자료.md)
 
 <sub>제주 AI·빅데이터 활용 AI Agent 개발 챌린지 2026 출품작 · DataPlayLabs (개인 참가)</sub>
@@ -201,6 +207,8 @@ flowchart TD
 <br>
 
 ## 🚀 실행하기
+
+**설치 없이 보기**: [dataplaylabs.site](https://dataplaylabs.site) 에서 실제 데이터와 Agent 를 그대로 써 볼 수 있습니다. 공개 데모라 CSV 넣기는 막아 두었고, 질문은 하루 20건까지입니다.
 
 **Windows (센터 PC)**: Python 3.12 를 설치한 뒤 `run.bat` 을 더블클릭합니다. 브라우저가 `http://localhost:8765` 를 엽니다. 자세한 순서는 [설치·실행 안내](docs/설치_실행_안내.md)에 있습니다.
 
