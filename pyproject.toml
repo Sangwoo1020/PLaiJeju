@@ -1,0 +1,38 @@
+[project]
+name = "golmok"
+version = "0.1.0"
+description = "제주 골목상권 민생 진단 Agent (제주 AI·빅데이터 활용 AI Agent 개발 챌린지 제출작)"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb>=1.0",
+    "pandas>=2.2",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "anthropic>=2.5",
+    "python-dotenv>=1.0",
+    "reportlab>=4.2",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "openpyxl>=3.1",   # 명세서 → 스키마 변환
+    "pillow>=10",      # 고도 타일 → 지형 파일 변환
+    "scipy>=1.11",
+    "pytest>=8",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+golmok = ["*.json", "reference/*.csv"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# 설치 없이도 테스트가 돌도록 src 를 직접 경로에 넣는다 (macOS 에서 숨김 처리된 .pth 가 무시되는 문제 회피).
+pythonpath = ["src"]

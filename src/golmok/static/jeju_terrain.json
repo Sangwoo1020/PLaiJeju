@@ -1,0 +1,11 @@
+{
+ "columns": 461,
+ "rows": 301,
+ "cell": 0.1,
+ "west": 126.055,
+ "east": 127.055,
+ "north": 33.65902265253928,
+ "south": 33.11097734746072,
+ "source": "Terrain Tiles (Mapzen/Tilezen), AWS Open Data — 원자료 NASA SRTM 등",
+ "source_url": "https://registry.opendata.aws/terrain-tiles/"
+}

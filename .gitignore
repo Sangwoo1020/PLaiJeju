@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.env
+*.duckdb
+data/mock_center/
+data/props_src/
+dist/
+.env.eval
+.env.*
+!.env.example
+wheels/
+src/golmok/reference/*.csv
+data/
+*.zip

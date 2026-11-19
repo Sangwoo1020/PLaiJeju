@@ -1,0 +1,11 @@
+# 실행에 필요한 패키지 (Python 3.12 에서 확인한 버전)
+anthropic==2.5.0
+duckdb==2.0.0
+fastapi==0.162.0
+matplotlib==3.11.2
+numpy==2.5.4
+pandas==3.1.1
+pydantic==2.14.2
+python-dotenv==1.2.4
+reportlab==5.1.0
+uvicorn==0.54.0

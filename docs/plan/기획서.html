@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>제주 관광 낙수 진단 Agent 기획서</title>
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --ink: #1b2a3b; --soft: #55677d; --faint: #8796a8; --sea: #2a78d6; --deep: #14406e; --sand: #eb6834; --sky: #e9f2fb; --line: #d5dfe8; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; color: var(--ink); font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 10.4pt; line-height: 1.62; word-break: keep-all; }
+  .page { position: relative; width: 210mm; height: 297mm; padding: 18mm 18mm 20mm; overflow: hidden; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .foot { position: absolute; left: 18mm; right: 18mm; bottom: 9mm; display: flex; justify-content: space-between; color: var(--faint); font-size: 8pt; }
+  h2 { margin: 0 0 6mm; font-size: 23pt; line-height: 1.25; letter-spacing: -0.03em; font-weight: 800; }
+  h2 small { display: block; margin-bottom: 1mm; color: var(--sea); font-size: 10.5pt; font-weight: 700; letter-spacing: 0; }
+  h3 { margin: 6mm 0 2mm; font-size: 12.5pt; letter-spacing: -0.01em; font-weight: 800; }
+  p { margin: 0 0 2.5mm; }
+  .lead { font-size: 12pt; line-height: 1.6; color: var(--ink); }
+  .note { color: var(--soft); font-size: 8.6pt; line-height: 1.5; }
+  ul { margin: 0 0 3mm; padding-left: 4.5mm; }
+  li { margin-bottom: 1.1mm; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.1pt; line-height: 1.45; margin-bottom: 3mm; }
+  th { padding: 1.8mm 2mm; background: var(--sky); text-align: left; font-weight: 700; }
+  td { padding: 1.7mm 2mm; border-bottom: 0.3mm solid var(--line); vertical-align: top; }
+  td b { font-weight: 700; }
+  .shot { display: block; width: 100%; border-radius: 3mm; border: 0.3mm solid var(--line); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .flag { padding: 2.6mm 3.5mm; border-left: 1mm solid var(--sand); background: #fdf1ea; font-size: 9.2pt; line-height: 1.5; margin-bottom: 3mm; }
+
+
+  .numbers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 4mm 0 5mm; }
+  .numbers div { padding: 3.5mm 4mm; border-radius: 2.5mm; background: var(--sky); }
+  .numbers b { display: block; font-size: 22pt; line-height: 1.2; letter-spacing: -0.03em; font-weight: 800; }
+  .numbers span { font-size: 8.8pt; line-height: 1.4; color: var(--soft); display: block; margin-top: 1mm; }
+  .steps { display: grid; grid-template-columns: 7mm 1fr; gap: 2.2mm 3mm; margin-bottom: 4mm; }
+  .steps > b { display: flex; align-items: center; justify-content: center; width: 7mm; height: 7mm; border-radius: 50%; background: var(--sea); color: #fff; font-size: 9.5pt; }
+  .steps div b { font-weight: 800; }
+  svg text { font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+  .tag { display: inline-block; padding: 0 1.8mm; border-radius: 1.2mm; font-size: 8.2pt; font-weight: 700; white-space: nowrap; }
+  .done { background: #e1eefb; color: #1d5fb0; }
+  .todo { background: #fdeee6; color: #a8431c; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 4mm; margin-bottom: 3mm; font-size: 8.7pt; line-height: 1.42; }
+  .grid2 div { padding: 1.4mm 1.5mm; border-bottom: 0.3mm solid var(--line); }
+  .grid2 b { font-weight: 800; }
+  .grid2 .new { color: var(--sea); font-size: 7.6pt; font-weight: 700; margin-left: 1mm; }
+  table.tight { font-size: 8.5pt; line-height: 1.38; }
+  table.tight td, table.tight th { padding: 1.25mm 1.8mm; }
+
+  /* 한 장 요약 표지 */
+  .cover { padding: 0; background: #fff; }
+  .cover__hero { position: relative; height: 112mm; overflow: hidden; background: #a8d3f6; }
+  .cover__hero > img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+  .cover__band { position: absolute; inset: 0; padding: 11mm 18mm 0; color: #fff; background: linear-gradient(180deg, rgba(14, 44, 78, 0.94) 0%, rgba(14, 44, 78, 0.86) 48%, rgba(14, 44, 78, 0.35) 68%, rgba(14, 44, 78, 0) 86%); }
+  .cover__event { font-size: 9.6pt; font-weight: 600; opacity: 0.92; }
+  .cover h1 { margin: 2.5mm 0 2mm; font-size: 30pt; line-height: 1.15; letter-spacing: -0.04em; font-weight: 800; }
+  .cover__sub { font-size: 11.6pt; line-height: 1.5; font-weight: 500; }
+  .cover__brand { display: flex; align-items: center; gap: 2.6mm; margin-bottom: 6mm; }
+  .cover__brand img { width: 10mm; height: 10mm; border-radius: 2.8mm; box-shadow: 0 2mm 4mm -2mm rgba(0, 0, 0, 0.5); }
+  .cover__brand b { display: block; color: #fff; font-size: 14pt; font-weight: 850; letter-spacing: -0.04em; line-height: 1.05; }
+  .cover__brand b em { color: #ffb15c; font-style: normal; }
+  .cover__brand small { display: block; color: rgba(255, 255, 255, 0.82); font-size: 8.4pt; font-weight: 600; }
+  .cover__body { padding: 6mm 18mm 0; }
+  .cover__ask { margin: 0 0 4.5mm; padding: 1mm 0 1mm 4mm; border-left: 1.2mm solid var(--sand); font-size: 12pt; line-height: 1.55; font-weight: 600; }
+  .cover__ask p { margin: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-bottom: 4mm; }
+  .kpis div { padding: 3mm 3mm 2.6mm; border-radius: 2.5mm; border: 0.3mm solid var(--line); text-align: center; }
+  .kpis b { display: block; color: var(--sea); font-size: 18pt; line-height: 1.15; letter-spacing: -0.03em; font-weight: 800; }
+  .kpis b.warm { color: var(--sand); }
+  .kpis span { display: block; margin-top: 1mm; color: var(--soft); font-size: 8pt; line-height: 1.38; }
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; margin-bottom: 4mm; }
+  .cards3 div { padding: 3mm 3.4mm; border-radius: 2.5mm; background: var(--sky); font-size: 8.9pt; line-height: 1.5; }
+  .cards3 h4 { margin: 0 0 1.2mm; font-size: 10.4pt; font-weight: 800; }
+  .cover__row { display: grid; grid-template-columns: 96mm 1fr; gap: 4mm; align-items: start; }
+  .cover__row .note { margin-top: 1.2mm; font-size: 7.9pt; }
+  table.facts { font-size: 8.4pt; line-height: 1.42; margin: 0; }
+  table.facts td { padding: 1.5mm 1.6mm; }
+  table.facts td:first-child { width: 17mm; font-weight: 800; white-space: nowrap; }
+
+  /* 차트 읽는 법 */
+  .read { margin: 1.8mm 0 3mm; padding-top: 1.8mm; border-top: 0.3mm dashed var(--line); font-size: 9pt; line-height: 1.52; }
+  .read > i { font-style: normal; color: var(--sea); font-weight: 800; margin-right: 1.6mm; }
+  .read strong { color: #a8431c; font-weight: 700; }
+
+  /* Agent 단계 카드 */
+  .flow { display: grid; gap: 2mm; margin: 3mm 0 4mm; }
+  .flow > div { display: grid; grid-template-columns: 8mm 46mm 1fr; gap: 3mm; align-items: center; padding: 2.4mm 3.5mm; border: 0.3mm solid var(--line); border-radius: 2.5mm; font-size: 9pt; line-height: 1.45; }
+  .flow > div.judge { border-color: #f2b593; background: #fdf4ee; }
+  .flow > div > b { display: flex; align-items: center; justify-content: center; width: 7mm; height: 7mm; border-radius: 50%; background: var(--deep); color: #fff; font-size: 9pt; }
+  .flow h4 { margin: 0; font-size: 10pt; font-weight: 800; }
+  .flow code { display: block; margin-top: 0.4mm; color: var(--sea); font-size: 8pt; font-family: Menlo, Consolas, monospace; }
+  .who { display: inline-block; margin-left: 1.4mm; padding: 0 1.4mm; border-radius: 1mm; font-size: 7.2pt; font-weight: 700; vertical-align: 1px; }
+  .who--ai { background: #fde3d4; color: #a8431c; }
+  .who--code { background: #dfe8f3; color: #14406e; }
+  ul.limits { font-size: 9.3pt; line-height: 1.5; }
+  ul.limits li { margin-bottom: 0.6mm; }
+</style>
+</head>
+<body>
+
+<section class="page cover">
+  <div class="cover__hero">
+    <img src="../assets/cover_island.png" alt="3D 제주 섬 장면">
+    <div class="cover__band">
+      <div class="cover__brand"><img src="../assets/logo.svg" alt="PLaiJeju 로고"><span><b>PL<em>ai</em>Jeju</b><small>개인 참가 · DataPlayLabs</small></span></div>
+      <div class="cover__event">제주 AI·빅데이터 활용 AI Agent 개발 챌린지 · AI Agent 기획서</div>
+      <h1>제주 관광 낙수 진단 Agent</h1>
+      <div class="cover__sub">배는 오는데 돈은 안 온다. 외국인·크루즈 관광객의 소비가 어느 동네에<br>떨어지는지 말로 묻고, 반출 기준에 맞춘 보고서까지 받습니다.</div>
+    </div>
+  </div>
+  <div class="cover__body">
+    <div class="cover__ask"><p>"외국인 관광객이 늘었는데, 돈은 어느 동네에 떨어지나요?"</p><p>"우도면은 사람만 늘고 돈은 안 떨어지나요?"</p></div>
+    <div class="kpis">
+      <div><b>+24.7%</b><span>외국인 관광객 카드 소비<br>2026.9, 전년 같은 달 대비</span></div>
+      <div><b class="warm">43.7%</b><span>내국인 관광객 소비가 준 만큼을<br>외국인 증가분이 메운 비율</span></div>
+      <div><b>201 / 201</b><span>실제 Claude 호출 10문항에서<br>계산 결과로 확인된 답의 수치</span></div>
+      <div><b>12 + 3</b><span>낙수 지표 12종과<br>분석 알고리즘 3종</span></div>
+    </div>
+    <div class="cards3">
+      <div><h4>문제</h4>외국인·크루즈 관광객은 늘고 내국인은 줄었습니다. 늘어난 사람만큼 돈이 어느 동네에 떨어지는지는 카드·유동인구가 기관과 지역 단위별로 흩어져 있어 동네 단위로 답하기 어렵습니다.</div>
+      <div><h4>Agent 가 하는 일</h4>질문에서 동네·달·업종·관광객 구분을 읽고, 지표를 골라 계산하고, 추이와 비교로 원인을 좁힌 뒤, 답의 수치를 계산 결과와 대조해 근거 없는 수치는 고쳐 씁니다.</div>
+      <div><h4>결과</h4>돈이 덜 떨어지는 동네를 3D 섬과 목록에 강조하고, 근거와 한계가 붙은 답과 함께 반출 기준(10 미만 가림, 응용집계만)에 맞춘 PDF·PNG 보고서를 줍니다.</div>
+    </div>
+    <div class="cover__row">
+      <div><img class="shot" src="../assets/app_summary.png" alt="주의 지역 종합 화면"><p class="note">주의 지역 종합 화면(실데이터 2026년 9월). 왼쪽에서 묻고, 3D 섬과 오른쪽 목록에서 여러 지표에 함께 걸린 동네를 봅니다.</p></div>
+      <table class="facts">
+        <tr><td>핵심 데이터</td><td>제주빅데이터센터 카드 이용 현황(1-08·1-14), 외국인·내국인 유동인구(4-15·4-11), 종량제봉투(5-03), 외식업 POS(1-19), 업종별 매장 수(1-17). 공개 실데이터 5종 내장(관광공사 소비·방문객, 입도통계, 크루즈 실적, 상가 매장 수)</td></tr>
+        <tr><td>사용 모델</td><td>Claude Opus 5.5(<code>claude-opus-5-5</code>) 도구 호출 Agent. API 없이도 끝까지 도는 기본 모드</td></tr>
+        <tr><td>실행 환경</td><td>센터 PC(Windows 11)에서 로컬 서버 + 브라우저. Python 3.12 하나만 설치, 패키지는 동봉</td></tr>
+        <tr><td>참가</td><td>개인 참가</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="page">
+  <h2><small>1. 구현 목표</small>관광객은 늘었는데, 돈은 어느 동네에 떨어지는가</h2>
+  <p class="lead">제주 관광의 구조가 바뀌고 있습니다. 내국인 관광객은 2026년 5월부터 여섯 달 연속 줄었고, 외국인과 크루즈 관광객은 늘었습니다. 그런데 늘어난 사람만큼 돈이 지역에 떨어지는지는 아무도 동네 단위로 답하지 못합니다.</p>
+  <div class="numbers">
+    <div><b>188 → 122$</b><span>크루즈 관광객 1인당 지출 (2023 → 2025, 제주도 실태조사)</span></div>
+    <div><b>80만 명</b><span>2026년 크루즈 관광객 전망. 2023년 10만의 8배, 2027년 100만 예상</span></div>
+    <div><b>-12.9%</b><span>내국인 관광객 전년 대비 (2026년 10월). 외국인은 +10%</span></div>
+  </div>
+  <h3>왜 지금 논쟁인가</h3>
+  <ul>
+    <li>2026년 10월 도의회 행정사무감사에서 "크루즈 75만 명 시대, 배는 오는데 돈은 안 온다", "소비가 대기업 면세점에 집중되고 전통시장은 지나친다"는 지적과 함께 <b>면세점 외 지역상권 카드소비 분석</b>이 요구됐습니다.</li>
+    <li>민선 9기 도정은 "방문객 소비의 골목상권 환원"을, 제주관광공사 새 경영진은 "유치 중심에서 체류시간·지역소비 확대로"를 내걸었습니다.</li>
+    <li>우도면은 2026년 8월 외국인 방문이 전년 동월 대비 257% 늘었고(제주관광빅데이터플랫폼), 쓰레기와 혼잡이 함께 보도됐습니다.</li>
+  </ul>
+  <h3>풀려는 문제</h3>
+  <p>제주빅데이터센터의 카드 데이터는 이용자를 도민·내국인·중국·일본·동남아·기타외국으로 나눠 법정동·업종별로 갖고 있고, 단기체류 외국인 유동인구는 국적별로 행정동 단위로 있습니다. 이 둘을 겹치면 "사람은 왔는데 돈은 안 쓴 동네"를 셀 수 있지만, 데이터를 고르고 지표를 만들고 반출 기준에 맞추는 일은 전문가의 몫이었습니다.</p>
+  <h3>AI 를 활용한 데이터 분석 목표</h3>
+  <table>
+    <tr><th style="width:30%">목표</th><th>달성 방법</th></tr>
+    <tr><td><b>논쟁을 수치로</b></td><td>"돈이 떨어지는가"를 소비 비중, 낙수 지수, 메움률, 크루즈 기항 효과, 입도객 1인당 소비, 저녁·밤 소비, 동네 식당 체감, 도민 가게 몫, 가게당 관광객 소비 등 12가지 지표로 바꾸고, 문제가 겹치는 동네를 지도에 강조합니다.</td></tr>
+    <tr><td><b>누구나 묻는다</b></td><td>동네·업종·관광객 구분을 말로 물으면 Agent 가 지표를 고르고 비교합니다.</td></tr>
+    <tr><td><b>믿을 수 있다</b></td><td>계산은 코드가 하고, 답변의 수치는 계산 결과와 자동 대조합니다. 인과가 아닌 것은 인과가 아니라고 말합니다.</td></tr>
+    <tr><td><b>그대로 쓴다</b></td><td>행정사무감사 답변서처럼 쓸 수 있게, 반출 기준에 맞는 보고서를 바로 내려받습니다.</td></tr>
+  </table>
+  <p class="note">출처: 제주도 방문관광객 실태조사(크루즈 1인당 지출, 2026.4 보도), 제주도 크루즈 전망(2026.1), 제주도관광협회 입도 통계(2026.10), 제주도의회 행정사무감사(2026.10), 제주관광빅데이터플랫폼(2026.11.8 조회), 파이낸셜뉴스(2026.11.9).</p>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>2</span></div>
+</section>
+
+<section class="page">
+  <h2><small>2. 서비스 제안</small>파일을 넣고, 묻고, 보고서를 받습니다</h2>
+  <p class="lead">센터 PC 에서 실행하는 로컬 웹 프로그램입니다. 이용자는 SQL 이나 코드를 몰라도 됩니다.</p>
+  <h3>이용 흐름</h3>
+  <div class="steps">
+    <b>1</b><div><b>센터에서 CSV 받기.</b> 카드(읍면동·시간대), 외국인·내국인 유동인구, 종량제봉투, 외식업 POS, 업종별 매장 수를 1개월 단위로 내려받습니다. 무엇을 받을지는 Agent 가 안내합니다. 공개 실데이터 5종이 들어 있어 CSV 없이도 지표 8종을 봅니다.</div>
+    <b>2</b><div><b>파일 끌어다 놓기.</b> 헤더를 명세서 71종(과 공개 데이터 형식 5종)과 대조해 어떤 데이터인지 자동으로 알아봅니다.</div>
+    <b>3</b><div><b>말로 묻기.</b> "외국인 관광객이 늘었는데 돈은 어느 동네에 떨어지나요?"</div>
+    <b>4</b><div><b>섬에서 확인하기.</b> 답변과 함께 3D 섬과 목록이 해당 지표와 지역으로 바뀝니다.</div>
+    <b>5</b><div><b>보고서 받기.</b> PDF, PNG 차트, 반출 신청용 출처·사유 초안을 zip 으로 받습니다.</div>
+  </div>
+  <h3>핵심 기능</h3>
+  <table>
+    <tr><th style="width:27%">기능</th><th>내용</th></tr>
+    <tr><td><b>낙수 진단 12종</b></td><td>매출·객단가 증감률, 소비 비중, 내국인 공백 메우기, 낙수 지수, 쓰레기 부담, 크루즈 기항 효과, 저녁·밤 소비, 입도객 1인당 소비, 동네 식당 체감, 도민 가게 몫, 가게당 관광객 소비. 이용자 구분은 외국인 전체·중국·일본·동남아·기타외국·내국인 관광객·도민.</td></tr>
+    <tr><td><b>말로 묻는 진단</b></td><td>Agent 가 지표, 지역, 업종, 이용자 구분을 스스로 정해 짝지어 비교합니다. 예: 크루즈 효과는 면세점(G47130)과 음식점(I56)으로 나눠 봅니다.</td></tr>
+    <tr><td><b>데이터 안내</b></td><td>부족한 데이터를 "어떤 데이터의 몇 월"로 알려주고, 명세서에서 데이터를 찾아 줍니다.</td></tr>
+    <tr><td><b>주의 지역</b></td><td>지표마다 문제 쪽으로 가장 치우친 3곳을 산호색 카드·라벨·고리로 강조하고, '주의 지역 종합'에서 여러 지표에 함께 걸린 동네를 먼저 보여줍니다.</td></tr>
+    <tr><td><b>반출 가드</b></td><td>표본이 적은 값을 가리고 근거 컬럼을 제거합니다. 원본은 외부로 나가지 않습니다.</td></tr>
+    <tr><td><b>3D 낙수 지도</b></td><td>실제 고도 지형 위에 지역마다 기둥이 솟고, 높이와 색이 값입니다. 낙수 지수는 떨어지는 동전, 크루즈 효과는 항구에서 이어지는 선, 저녁·밤 소비는 해 질 녘으로 보여줍니다.</td></tr>
+    <tr><td><b>보고서</b></td><td>근거, 계산식, 한계, 출처가 들어간 PDF 와 반출 신청 참고 문서를 만듭니다.</td></tr>
+    <tr><td><b>동네 진단 카드·비교</b></td><td>동네를 누르면 지표별 값, 제주 안 위치, 문제 쪽 지표, 최근 2년 소비 흐름이 한 장에 모입니다. 두 동네를 나란히 놓고, 버튼 하나로 Agent 질문으로 잇습니다.</td></tr>
+  </table>
+  <h3>편의성</h3>
+  <ul>
+    <li><b>기본 모드</b>: API 키가 없거나 외부 접속이 막혀도 규칙 기반으로 답하고, 그 이유를 표시합니다.</li>
+    <li><b>실패를 안내로</b>: 파일이 맞지 않으면 어떤 컬럼이 다른지, 데이터가 없으면 무엇을 받아야 하는지 말합니다.</li>
+    <li><b>신뢰 표시</b>: 값마다 표본 규모에 따른 신뢰 수준을, 해석마다 인과가 아니라는 한계를 함께 보여줍니다.</li>
+  </ul>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>3</span></div>
+</section>
+
+<section class="page">
+  <h2><small>2. 서비스 제안</small>화면 구성</h2>
+  <img class="shot" src="../assets/app_summary.png" alt="주의 지역 종합 화면">
+  <p class="note" style="margin-top:2mm"><b>주의 지역 종합</b> (실데이터: 제주관광공사 소비·방문객, 상가 매장 수, 입도통계, 2026년 9월, 음식점·카페·주점, 외국인 관광객). 여러 지표에서 함께 문제로 나온 동네일수록 기둥이 높고 진합니다. 해상도 1920×1080 기준입니다.</p>
+  <table style="margin-top:3mm">
+    <tr><th style="width:24%">위치</th><th>구성</th></tr>
+    <tr><td><b>왼쪽</b></td><td>동네 진단 카드와 두 동네 비교, 질문창과 답변(Claude 가 도구를 골라 계산한 뒤 해석), 진행 단계, 근거 없는 수치 경고, 보고서 내려받기. 데이터 패널은 위쪽 버튼으로 접고 폅니다.</td></tr>
+    <tr><td><b>가운데</b></td><td>3D 제주 섬과 지역별 기둥. 지표마다 카메라 구도가 바뀌고, 지역을 누르면 그 동네로 날아가 확대합니다. 도심은 실제 건물까지 보입니다.</td></tr>
+    <tr><td><b>오른쪽</b></td><td>주의 지역 종합과 지표 12종을 고르는 메뉴, 주의 지역 카드, 지역 순위 막대, 계산식, 출처, 표본 비공개 처리 내역. 메움률·상관계수 같은 보조값을 함께 적습니다.</td></tr>
+    <tr><td><b>위쪽</b></td><td>제주 전체 요약: 외국인 관광객 매출, 내국인 관광객 매출, 외국인 소비 비중.</td></tr>
+    <tr><td><b>아래쪽</b></td><td>이름표가 붙은 조건 상자 4개: 기준 월, 지역 단위, 업종(면세점·음식점·숙박·소매 등), 이용자 구분.</td></tr>
+  </table>
+  <div class="two" style="gap:4mm;margin-top:1mm">
+    <div><img class="shot" src="../assets/app_dong.png" alt="동네 진단 카드"><p class="note" style="margin-top:1mm"><b>동네 진단 카드.</b> 연동을 누르면 실제 건물(OpenStreetMap)로 내려가고, 왼쪽에 지표별 값과 위치가 모입니다.</p></div>
+    <div><img class="shot" src="../assets/app_compare.png" alt="두 동네 비교"><p class="note" style="margin-top:1mm"><b>두 동네 비교.</b> 노형동과 연동을 나란히 놓고, 빨간 값으로 문제 쪽 지표를 짚습니다.</p></div>
+  </div>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>4</span></div>
+</section>
+<section class="page">
+  <h2><small>2. 서비스 제안</small>실제 질문과 답</h2>
+  <p class="lead">센터 데이터 없이, 프로그램에 든 공개 실데이터만 넣고 질문 한 줄을 던졌습니다. 아래는 그때의 화면 그대로입니다.</p>
+  <img class="shot" src="../assets/app_answer_real.png" alt="우도면 질문에 대한 실제 답변 화면">
+  <p class="note" style="margin-top:1.5mm">질문 "우도면은 사람만 늘고 돈은 안 떨어지나요?" (2026-11-17, Claude Opus 5.5, 실데이터 2026년 9월). 왼쪽 위에 계획·실행·검증 단계가 보이고, 섬과 오른쪽 목록이 답의 지표와 동네로 바뀝니다.</p>
+  <div class="two" style="gap:5mm;margin-top:2.5mm">
+    <div>
+      <h3 style="margin-top:0">Agent 가 한 일</h3>
+      <div class="steps" style="margin-bottom:0">
+        <b>1</b><div><b>계획.</b> "우도면의 소비·방문객 증감과 낙수 지수를 보고, 추세로 일시적인지 확인하겠다."</div>
+        <b>2</b><div><b>실행.</b> 넣은 데이터 확인 → 동네 요약 → 월별 추이 → 기대 대비 실제 소비. 도구 4개를 스스로 골랐습니다.</div>
+        <b>3</b><div><b>검증.</b> 답의 수치 중 계산 결과에 없는 1개를 코드가 찾아 되돌렸고, 고쳐 쓴 답은 11개 모두 확인됐습니다.</div>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-top:0">답 (발췌)</h3>
+      <div class="flag" style="border-left-color:var(--sea);background:var(--sky);margin-bottom:0">"아니요. 9월 우도면은 외국인 방문객(+56.2%)보다 외국인 소비(+69.8%)가 더 크게 늘었습니다. 낙수 지수는 1.38입니다. 다만 8월 한 달은 방문객이 257.3% 늘었는데 소비는 42.1% 늘어, 사람만 늘고 돈은 덜 떨어진 모습에 가깝습니다."<br>이어서 한계(비씨카드 범위, 월 단위)와 다음에 볼 것(업종별 쏠림, 8월 원인)을 적었습니다.</div>
+    </div>
+  </div>
+  <h3>같은 화면에서 더 되는 것</h3>
+  <div class="numbers" style="margin:2mm 0 0">
+    <div><b style="font-size:13pt">이어서 묻기</b><span>"그럼 음식점만 보면?"처럼 물으면 앞 질문의 동네·달·관광객 구분을 이어받습니다.</span></div>
+    <div><b style="font-size:13pt">이번 달 자동 브리핑</b><span>질문 없이 Agent 가 문제 동네 3곳을 찾아 추이와 업종까지 확인합니다. 실제 호출 55초, 수치 36개 모두 확인.</span></div>
+    <div><b style="font-size:13pt">키 없이도 동작</b><span>API 키가 없거나 외부 접속이 막히면 규칙 기반 기본 모드로 답합니다. 지표·지도·보고서는 그대로입니다.</span></div>
+  </div>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>5</span></div>
+</section>
+<section class="page">
+  <h2><small>2. 서비스 제안</small>실데이터로 찾은 것</h2>
+  <p class="lead">프로그램에 든 공개 데이터(관광공사 소비·방문객, 입도통계, 크루즈 실적)만으로 2026년 9월을 진단한 결과입니다. 가상 데이터가 아닙니다.</p>
+  <div class="numbers">
+    <div><b>+24.7%</b><span>외국인 관광객 카드 소비 (전년 같은 달 대비). 같은 달 내국인 관광객 소비는 −15.1%</span></div>
+    <div><b>43.7%</b><span>내국인 관광객 소비가 줄어든 금액 가운데 외국인 증가분이 메운 비율. 관광객 전체 소비는 −6.7%</span></div>
+    <div><b>−8.8%</b><span>외국인 건당 결제액. 입도객이 16.1% 늘어 1인당 소비는 +7.4%지만 한 번에 쓰는 돈은 줄었습니다</span></div>
+  </div>
+  <h3>사람 몫과 돈 몫이 어긋나는 동네</h3>
+  <img src="../assets/finding_share.svg" alt="외국인 방문객이 많은 동네 8곳의 방문객 비중과 소비 비중" style="display:block;width:100%">
+  <p class="read"><i>읽는 법</i>주황 막대(방문객 몫)가 파랑 막대(소비 몫)보다 길면 사람만큼 돈이 안 떨어지는 동네입니다. <strong>연동은 외국인 방문객의 22.4%가 오지만 소비는 14.2%</strong>, 대정읍은 방문객 3.1%에 소비 0.5%입니다. 반대로 예래동·안덕면은 방문객 몫의 2.5배가 쓰입니다.</p>
+  <h3>우도: "사람만 는다"는 8월 한 달이었다</h3>
+  <img src="../assets/finding_udo.svg" alt="우도면 외국인 방문객과 소비의 전년 같은 달 대비 증감 추이" style="display:block;width:100%">
+  <p class="read"><i>읽는 법</i>주황 선이 파랑 선 위로 올라간 달이 "사람만 는" 달입니다. <strong>2026년 8월 한 달만 방문객 +257.3%, 소비 +42.1%</strong>로 뒤집혔고, 나머지 달은 소비가 더 크게 늘었습니다(2월 소비 +209.1%, 방문객 +28.1%).</p>
+  <p class="note">소비는 비씨카드 결제만 담아 해외 간편결제와 현금이 빠집니다. 규모가 아니라 방향으로 읽어야 하며, 크루즈 효과는 인과가 아니라 함께 움직인 정도입니다.</p>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>6</span></div>
+</section>
+
+<section class="page">
+  <h2><small>2. 서비스 제안</small>10문항으로 확인한 답</h2>
+  <p class="lead">담당자가 물을 만한 질문 10개를 정해 두고, 실데이터로 실제 Claude 를 불러 답을 받았습니다. 문항마다 아래 네 가지를 코드가 검사합니다.</p>
+  <div class="grid2">
+    <div><b>지표 선택</b> 질문에 맞는 지표를 골랐는가</div>
+    <div><b>조건</b> 질문의 동네·달·업종을 그대로 넘겼는가</div>
+    <div><b>데이터 안내</b> 없는 데이터는 무엇을 받아 오라고 말하는가</div>
+    <div><b>수치 근거</b> 답의 % ·소수 수치가 모두 계산 결과에 있는가</div>
+  </div>
+  <table class="tight">
+    <tr><th style="width:5%">#</th><th style="width:39%">질문</th><th>Agent 가 고른 도구</th><th style="width:9%">수치 확인</th><th style="width:7%">시간</th></tr>
+    <tr><td>1</td><td>외국인 관광객이 늘었는데 돈은 어느 동네에 떨어지나요?</td><td>소비 비중 → 낙수 지수 → 매출 증감률</td><td>41/41</td><td>29초</td></tr>
+    <tr><td>2</td><td>크루즈가 많이 온 달에 음식점 매출도 늘었나요?</td><td>크루즈 기항 효과(음식점) → 크루즈 기항 효과(면세점) → 크루즈 기항 효과(소매) → 크루즈 효과 보정(음식점)</td><td>10/10</td><td>31초</td></tr>
+    <tr><td>3</td><td>내국인 관광객이 줄어든 자리를 외국인이 메우고 있나요?</td><td>내국인 공백 메우기 → 매출 증감률 → 내국인 공백 메우기 두 달 비교</td><td>22/22</td><td>27초</td></tr>
+    <tr><td>4</td><td>우도면은 사람만 늘고 돈은 안 떨어지나요?</td><td>동네 요약 → 월별 추이 → 기대 대비 실제 소비</td><td>17/17</td><td>29초</td></tr>
+    <tr><td>5</td><td>외국인 입도객 1인당 소비가 작년보다 줄었나요?</td><td>입도객 1인당 소비 → 객단가 증감률</td><td>4/4</td><td>18초</td></tr>
+    <tr><td>6</td><td>연동과 중문동 중 외국인 소비가 더 많이 늘어난 곳은 어디인가요?</td><td>월별 추이</td><td>17/17</td><td>16초</td></tr>
+    <tr><td>7</td><td>2026년 6월 성산읍의 외국인 소비 비중은 1년 전보다 늘었나요?</td><td>소비 비중</td><td>2/2</td><td>12초</td></tr>
+    <tr><td>8</td><td>계절이나 추세를 빼고 봐도 기대보다 외국인 소비가 덜 떨어진 동네는 어디인가요?</td><td>기대 대비 실제 소비 → 낙수 지수 → 크루즈 효과 보정 → 월별 추이</td><td>32/32</td><td>52초</td></tr>
+    <tr><td>9</td><td>가게 수에 비해 외국인 소비가 몰리는 동네와 비는 동네는 어디인가요?</td><td>가게당 관광객 소비</td><td>41/41</td><td>24초</td></tr>
+    <tr><td>10</td><td>쓰레기 부담은 어느 동네가 큰가요?</td><td>쓰레기 부담 → 낙수 지수</td><td>15/15</td><td>21초</td></tr>
+  </table>
+  <p class="read"><i>읽는 법</i>질문이 복잡할수록 Agent 가 도구를 여러 개 이어 부릅니다(8번은 4종). <strong>10문항 모두 기대한 지표·동네·달·업종을 골랐고, 답의 수치 201개가 전부 계산 결과에서 확인됐습니다.</strong> 평균 26초, 합계 $1.31. API 없이 도는 기본 모드도 10문항을 통과했습니다. 답변 전문은 제출물의 docs/평가셋_결과.md 에 있습니다.</p>
+
+  <h3>분석 알고리즘이 바꾼 결론: 크루즈 효과 보정 (2023.3~2025.5, 외국인 소비)</h3>
+  <table class="tight">
+    <tr><th style="width:26%">동네</th><th style="width:20%">단순 비교</th><th style="width:20%">섬 전체 추세 제거 후</th><th>읽는 법</th></tr>
+    <tr><td><b>건입동</b> (제주항)</td><td>+12.6%</td><td><b>−15.8%</b></td><td rowspan="2">크루즈가 많은 달에 늘어난 것처럼 보이지만, 섬 평균보다는 덜 늘었습니다. 통계적으로는 보통 범위입니다.</td></tr>
+    <tr><td><b>대천동</b> (강정항)</td><td>+12.7%</td><td><b>−16.0%</b></td></tr>
+    <tr><td><b>이호동</b></td><td>+129.5%</td><td><b>+146.8%</b></td><td>보정 뒤에도 섬 평균보다 뚜렷하게 더 늘었습니다.</td></tr>
+  </table>
+  <p class="read"><i>읽는 법</i>크루즈 관광객이 많은 달과 적은 달의 외국인 소비를 단순 비교하면 항구 동네도 늘어난 것으로 나옵니다. 동네·달 고정효과로 섬 전체가 함께 움직인 부분을 걷어내면 <strong>건입동·대천동은 오히려 섬 평균보다 덜 늘었습니다.</strong> Agent 는 두 값을 함께 보여 주고, 통계적으로 뚜렷하지 않은 값은 그렇다고 말합니다.</p>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>7</span></div>
+</section>
+<section class="page">
+  <h2><small>3. Agent 개발 구성</small>판단은 Claude 가, 계산과 통제는 코드가</h2>
+  <svg viewBox="0 0 520 290" width="100%" role="img" aria-label="Agent 구조도">
+    <defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7z" fill="#55677d"/></marker></defs>
+    <g font-size="10.5" fill="#1b2a3b">
+      <rect x="0" y="108" width="84" height="66" rx="8" fill="#e9f2fb"/><text x="42" y="136" text-anchor="middle" font-weight="700">이용자</text><text x="42" y="152" text-anchor="middle" font-size="9" fill="#55677d">질문, CSV</text>
+      <rect x="118" y="88" width="104" height="106" rx="8" fill="#2a78d6"/><text x="170" y="128" text-anchor="middle" font-weight="700" fill="#fff" font-size="12">Claude</text><text x="170" y="146" text-anchor="middle" font-size="9" fill="#fff">계획, 지표 선택</text><text x="170" y="160" text-anchor="middle" font-size="9" fill="#fff">비교, 해석</text>
+      <rect x="258" y="20" width="118" height="40" rx="7" fill="#e9f2fb"/><text x="317" y="37" text-anchor="middle" font-weight="700" font-size="9.5">scan_issues</text><text x="317" y="50" text-anchor="middle" font-size="8.5" fill="#55677d">문제 동네 스스로 찾기</text>
+      <rect x="258" y="72" width="118" height="40" rx="7" fill="#e9f2fb"/><text x="317" y="89" text-anchor="middle" font-weight="700" font-size="9.5">trend · compare · place</text><text x="317" y="102" text-anchor="middle" font-size="8.5" fill="#55677d">원인 좁히기 (추이·비교)</text>
+      <rect x="258" y="124" width="118" height="40" rx="7" fill="#e9f2fb"/><text x="317" y="141" text-anchor="middle" font-weight="700" font-size="9.5">compute_metric</text><text x="317" y="154" text-anchor="middle" font-size="8.5" fill="#55677d">지표 12종 + 알고리즘 3종</text>
+      <rect x="258" y="196" width="118" height="46" rx="7" fill="#fdeee6"/><text x="317" y="215" text-anchor="middle" font-weight="700" font-size="9.5">반출 가드</text><text x="317" y="229" text-anchor="middle" font-size="8.5" fill="#55677d">표본 검사, 근거 제거</text>
+      <rect x="412" y="124" width="108" height="118" rx="8" fill="#e9f2fb"/><text x="466" y="150" text-anchor="middle" font-weight="700">메모리 DB</text><text x="466" y="166" text-anchor="middle" font-size="8.5" fill="#55677d">이용자가 넣은 CSV</text><text x="466" y="180" text-anchor="middle" font-size="8.5" fill="#55677d">+ 공개 데이터 5종</text><text x="466" y="194" text-anchor="middle" font-size="8.5" fill="#55677d">센터 PC 안에만 존재</text>
+      <rect x="118" y="226" width="104" height="56" rx="8" fill="#14406e"/><text x="170" y="248" text-anchor="middle" font-weight="700" fill="#fff" font-size="9.5">수치 검증·고쳐 쓰기</text><text x="170" y="263" text-anchor="middle" font-size="8.5" fill="#fff">근거 없으면 되돌림</text>
+    </g>
+    <g stroke="#55677d" stroke-width="1.2" fill="none" marker-end="url(#a)">
+      <path d="M84 141H116"/><path d="M222 112L256 44"/><path d="M222 128L256 92"/><path d="M222 142L256 144"/>
+      <path d="M376 144H410"/><path d="M412 219H378"/><path d="M258 219L224 170"/><path d="M170 194V224"/>
+    </g>
+    <text x="238" y="284" font-size="8.8" fill="#55677d">LLM 으로 가는 값은 반출 가드를 통과한 응용집계뿐입니다.</text>
+  </svg>
+  <h3 style="margin-top:3mm">참여자별 역할과 목표</h3>
+  <table>
+    <tr><th style="width:21%">참여자</th><th style="width:37%">역할</th><th>목표</th></tr>
+    <tr><td><b>이용자</b></td><td>질문, CSV 내려받기, 반출 신청</td><td>전문 지식 없이 진단 결과를 얻음</td></tr>
+    <tr><td><b>Claude</b></td><td>계획 수립, 도구 선택, 지표 짝짓기, 비교, 해석, 한계 서술</td><td>근거가 있는 답을 쉬운 말로 제공</td></tr>
+    <tr><td><b>센터 담당자</b></td><td>설치, API 키 설정, 반출 심사</td><td>안정적 운영과 최종 승인</td></tr>
+  </table>
+  <h3>분석 알고리즘 3종 <span class="new">추가</span></h3>
+  <table class="tight">
+    <tr><th style="width:24%">알고리즘</th><th>방법 (API 없이 PC 안에서, 난수 없음)</th><th style="width:27%">실데이터 결과 (2026.9)</th></tr>
+    <tr><td><b>기대 대비 실제</b></td><td>동네 고정효과·1~12월·log 방문객·추세 회귀로 기대 소비 예측, 90% 범위 밖은 '뚜렷함'</td><td>봉개동 −57%, 용담1동 −49%. 미리 예측 오차 23%</td></tr>
+    <tr><td><b>크루즈 효과 보정</b></td><td>동네·달 고정효과로 섬 전체 회복세 제거 후 크루즈 많은 달 차이(이중차분)</td><td>삼도2동 보정 전 +5% → 보정 후 −25%</td></tr>
+    <tr><td><b>동네 유형</b></td><td>외국인 소비 구성 6가지 특징 k-평균(k=4)</td><td>쇼핑·숙박·사람만 오는·음식 4유형</td></tr>
+  </table>
+  <h3>Workflow</h3>
+  <p><b>계획 → 데이터 확인 → 계산 → 원인 좁히기 → 수치 검증 → 결과.</b> 단계마다 쓰는 도구와 실제 호출에서 Agent 가 내린 판단은 다음 쪽에 있습니다. <b>자동 브리핑</b>은 질문 없이 같은 순서로 문제 동네를 찾아 브리핑과 보고서를 쓰고, 이어지는 질문은 앞선 대화를 기억합니다.</p>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>8</span></div>
+</section>
+
+<section class="page">
+  <h2><small>3. Agent 개발 구성</small>Agent 가 일하는 순서</h2>
+  <p class="lead">순서와 도구는 Claude 가 정하고, 계산·반출 기준·답 검사는 코드가 맡습니다. 주황 칸은 Agent 가 상황을 보고 스스로 방향을 정하는 단계입니다.</p>
+  <div class="flow">
+    <div class="judge"><b>1</b><div><h4>의도 파악·계획<span class="who who--ai">Claude</span></h4></div><div>질문에서 동네·달·업종(면세점·음식점·숙박 등)·관광객 구분을 읽고, 볼 지표와 순서를 정해 화면에 '계획'으로 씁니다.</div></div>
+    <div class="judge"><b>2</b><div><h4>데이터 확인<span class="who who--ai">Claude</span></h4><code>list_data · search_datasets</code></div><div>넣은 데이터와 가장 최근 달, 가상 데이터인지 확인합니다. 필요한 데이터가 없으면 명세서에서 찾아 "어떤 데이터의 몇 월"을 받아 오라고 안내합니다.</div></div>
+    <div class="judge"><b>3</b><div><h4>문제 동네 찾기<span class="who who--ai">Claude</span></h4><code>scan_issues</code></div><div>동네를 정하지 않은 질문이나 자동 브리핑이면 지표 10종을 한꺼번에 계산해 여러 지표에 함께 걸린 동네부터 봅니다.</div></div>
+    <div><b>4</b><div><h4>지표 계산<span class="who who--code">코드</span></h4><code>compute_metric</code></div><div>지표 12종과 알고리즘 3종을 달·지역 단위·업종·이용자 구분으로 계산합니다. 반출 가드를 통과한 응용집계만 Claude 에게 돌아갑니다.</div></div>
+    <div class="judge"><b>5</b><div><h4>원인 좁히기<span class="who who--ai">Claude</span></h4><code>trend · compare_periods · place_summary</code></div><div>일시적인지 월별 추이로, 어느 업종인지 나눠서, 두 달·두 동네를 비교해 확인합니다. 표본이 적으면 판단을 미룹니다.</div></div>
+    <div><b>6</b><div><h4>수치 검증<span class="who who--code">코드</span></h4></div><div>답의 모든 %·소수 수치를 계산 결과와 대조합니다. 근거 없는 수치가 있으면 Claude 에게 되돌려 한 번 고쳐 쓰게 합니다.</div></div>
+    <div><b>7</b><div><h4>결과 정리<span class="who who--code">코드</span></h4></div><div>근거와 한계가 붙은 답, 3D 섬과 목록 강조, PDF·PNG 보고서와 반출 신청 참고 문서를 만듭니다. 10 미만 값은 가립니다.</div></div>
+  </div>
+  <h3>실제 호출에서 Agent 가 내린 판단</h3>
+  <table class="tight">
+    <tr><th style="width:32%">상황</th><th>Agent 의 판단</th></tr>
+    <tr><td>크루즈 실적이 2025년 5월까지만 있음 (질문 2)</td><td>가장 최근 달 대신 2025년 5월을 기준으로 계산한다고 밝히고 진행</td></tr>
+    <tr><td>제주 전체로는 크루즈 효과가 커 보임 (질문 2)</td><td>섬 전체의 계절·추세가 섞였을 수 있다고 보고, 크루즈 효과 보정으로 항구 주변 음식점을 다시 확인</td></tr>
+    <tr><td>"우도면은 사람만 느나요?" (질문 4)</td><td>동네 요약 → 월별 추이 → 기대 대비 실제 순서로 파고들어 "8월 한 달만 그랬다"고 답함</td></tr>
+    <tr><td>기대보다 덜 떨어진 동네 (질문 8)</td><td>결과에 나온 봉개동·용담1동의 월별 추이를 스스로 더 불러 확인</td></tr>
+    <tr><td>답에 근거 없는 수치 (질문 4·8)</td><td>코드가 1~2개를 찾아 되돌렸고, Claude 가 계산 결과에 있는 값으로 고쳐 씀</td></tr>
+    <tr><td>질문 없는 자동 브리핑</td><td>도구 10번으로 봉개동·이도2동·추자면을 찾고, 업종을 나눠 숙박 소비 감소를 짚음. 표본이 적은 추자면은 판단을 미룸</td></tr>
+  </table>
+  <p class="note">질문 1건은 도구 호출 8단계, 자동 브리핑은 14단계까지입니다. 넘으면 그때까지의 결과로 답합니다. 출처: 제출물 docs/평가셋_결과.md(2026-11-17 실제 호출, claude-opus-5-5).</p>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>9</span></div>
+</section>
+
+<section class="page">
+  <h2><small>3. Agent 개발 구성</small>모델, 도구, 자율 수행 범위</h2>
+  <h3 style="margin-top:0">사용 모델</h3>
+  <table>
+    <tr><th style="width:27%">항목</th><th>내용</th></tr>
+    <tr><td><b>기본 모델</b></td><td>Anthropic Claude Opus 5.5 (<code>claude-opus-5-5</code>), 추론 강도 medium. 환경변수로 변경 가능</td></tr>
+    <tr><td><b>방식</b></td><td>Messages API 도구 호출 루프 직접 구현. 프롬프트 캐시, 거절 시 서버 측 fallback</td></tr>
+    <tr><td><b>측정 비용</b></td><td>시연 질문 1건 약 $0.15~0.16 (요청 3회, 도구 7~8회). 간단한 질문은 $0.08 안팎</td></tr>
+    <tr><td><b>로컬 LLM</b></td><td>쓰지 않습니다. 센터 GPU VRAM 이 3GB 라 품질과 속도를 확보하기 어렵습니다</td></tr>
+  </table>
+  <h3>도구 7종</h3>
+  <table class="tight">
+    <tr><th style="width:27%">이름</th><th>기능</th></tr>
+    <tr><td><b>scan_issues</b> <span class="new">추가</span></td><td>지표 10종을 동네별로 한꺼번에 계산해 여러 지표에서 함께 걸린 동네를 찾음 (브리핑의 출발점)</td></tr>
+    <tr><td><b>trend</b> <span class="new">추가</span></td><td>동네의 월별 소비·방문객 전년 대비 증감 추이 (일시적인가, 언제부터인가)</td></tr>
+    <tr><td><b>compare_periods</b> <span class="new">추가</span></td><td>같은 지표를 두 달에 계산해 지역별 차이</td></tr>
+    <tr><td><b>place_summary</b> <span class="new">추가</span></td><td>동네의 외국인 소비·방문 변화, 낙수 지수, 가게당 소비 요약</td></tr>
+    <tr><td><b>compute_metric</b></td><td>지표 12종 + 알고리즘 3종을 달·지역 단위·업종·이용자 구분으로 계산. 데이터가 없으면 받을 데이터 안내</td></tr>
+    <tr><td><b>list_data · search_datasets</b></td><td>넣은 데이터와 달 확인, 명세서·공개 데이터 형식 검색</td></tr>
+  </table>
+  <h3>지표 12종 (모두 응용집계)</h3>
+  <div class="grid2">
+    <div><b>매출·객단가 증감률</b> 이용자 구분별 전년 같은 달 대비</div>
+    <div><b>소비 비중</b> 해당 구분 ÷ 개인 전체, 1년 전 대비(%p)</div>
+    <div><b>내국인 공백 메우기</b> 외국인 증가분 ÷ 내국인 감소분</div>
+    <div><b>낙수 지수</b> 소비 비중 ÷ 방문객 비중 (1 = 평균)</div>
+    <div><b>쓰레기 부담</b> 방문 체류 1천 명당 종량제봉투(L)</div>
+    <div><b>크루즈 기항 효과</b> 크루즈 많은 달 vs 적은 달</div>
+    <div><b>저녁·밤 소비</b> 저녁·밤 시간대 소비 비중</div>
+    <div><b>입도객 1인당 소비</b> 지역 소비 ÷ 입도객, 전년 대비</div>
+    <div><b>동네 식당 체감</b> 외식업 POS 가게당 매출 변화</div>
+    <div><b>도민 가게 몫</b> 도민 개인 매장으로 간 몫(추정)</div>
+    <div><b>가게당 관광객 소비</b> 소비 비중 ÷ 매장 수 비중</div>
+    <div><b>알고리즘 3종</b> 기대 대비 실제, 크루즈 보정, 동네 유형</div>
+  </div>
+  <h3>판단 및 자율 수행 범위</h3>
+  <table>
+    <tr><th style="width:27%">주체</th><th>범위</th></tr>
+    <tr><td><b>Claude 가 스스로</b></td><td>계획, 볼 지표와 짝, 문제 동네 찾기(브리핑), 추이·비교로 원인 좁히기, 근거 없는 수치 고쳐 쓰기, 다음 분석 제안</td></tr>
+    <tr><td><b>코드가 강제</b></td><td>모든 수치 계산, 반출 가드, 모든 수치 대조(1회 되돌림), 질문 8단계·브리핑 14단계 제한, 실패 시 기본 모드</td></tr>
+    <tr><td><b>할 수 없음</b></td><td>CSV 원본 읽기, 센터 시스템 조회, 파일 삭제, 외부 전송, 반출 신청</td></tr>
+    <tr><td><b>사람이 결정</b></td><td>CSV 내려받기, 활용 사유 작성, 반출 신청, 정책 판단. 반출 승인은 센터 심사</td></tr>
+  </table>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>10</span></div>
+</section>
+
+<section class="page">
+  <h2><small>4. 데이터 활용 계획</small>사람의 데이터와 돈의 데이터를 겹칩니다</h2>
+  <h3 style="margin-top:0">필수 데이터</h3>
+  <table class="tight">
+    <tr><th style="width:29%">데이터명</th><th style="width:19%">출처·기간</th><th>활용 항목</th><th style="width:21%">쓰임</th></tr>
+    <tr><td><b>카드 이용 현황(읍면동)_v02</b> (1-08)</td><td>센터, 비씨카드<br>2025.5~, 월</td><td>법정동, 42개 업종, 이용자구분 7개(국적 포함), 이용자수·건수·금액</td><td>매출·객단가, 소비 비중, 메우기, 낙수 지수, 크루즈 효과</td></tr>
+    <tr><td><b>단기체류 외국인 유동인구(읍면동)_v02</b> (4-15)</td><td>센터, SKT<br>2025.4~, 일·시각</td><td>행정동, 국적코드 31개, 방문인구</td><td>낙수 지수 분모, 쓰레기 부담</td></tr>
+    <tr><td><b>내국인 유동인구(읍면동)_v02</b> (4-11)</td><td>센터, SKT<br>2025.5~, 일·시각</td><td>권역, 행정동, 거주지, 방문인구</td><td>내국인 낙수 지수, 쓰레기 부담</td></tr>
+    <tr><td><b>종량제봉투판매실적</b> (5-03)</td><td>센터, 제주도<br>2012.1~, 일</td><td>시, 행정동, 봉투 종류·용량, 판매건수</td><td>쓰레기 부담 (반출 가능)</td></tr>
+    <tr><td><b>카드 이용 현황(시간대)_v02</b> (1-14)</td><td>센터, 비씨카드, 월</td><td>법정동, 업종, 이용자구분, 시간대 5개</td><td>저녁·밤 소비</td></tr>
+    <tr><td><b>외식업 포스 이용 현황(읍면동)</b> (1-19)</td><td>센터, 나이스지니, 월</td><td>시, 법정동, 음식 업종, 총매출, 표본 가게 수</td><td>동네 식당 체감</td></tr>
+    <tr><td><b>업종별 매장 수</b> (1-17)</td><td>센터, 비씨카드, 월</td><td>시, 매장주 구분(도민 개인·법인 등), 업종</td><td>도민 가게 몫</td></tr>
+    <tr><td><b>크루즈 입항 실적(월별)</b> (P-01)</td><td>제주도 누리집 공개<br>2023.3~2025.5</td><td>입항 횟수, 관광객수, 중국발, 항구별</td><td>크루즈 기항 효과</td></tr>
+    <tr><td><b>관광객 입도통계(월별·국적별)</b> (P-02)</td><td>제주관광협회 공개<br>2023.1~2026.9</td><td>내국인, 외국인 국적 12개의 입도객(확정치)</td><td>입도객 1인당 소비</td></tr>
+    <tr><td><b>제주 지역별 소비·방문객(읍면동)</b> (P-03·04)</td><td>제주관광공사 공개<br>2020.1~2026.9</td><td>행정동 43개, 관광객 구분 3개, 업종 5개 (BC카드·SKT)</td><td>센터 카드·유동인구 대체</td></tr>
+    <tr><td><b>상가 매장 수</b> (P-05)</td><td>소상공인진흥공단 공개<br>2026.9 기준</td><td>읍면동·업종별 매장 수</td><td>가게당 관광객 소비</td></tr>
+  </table>
+  <div class="flag"><b>현재 시험 상태.</b> 공개 5종은 실제 파일로 검증해 넣었고(지표 8종 실값 계산), 센터 7종은 명세서대로 만든 가상 데이터로 검증했습니다.</div>
+  <h3>수집과 전처리</h3>
+  <div class="steps">
+    <b>1</b><div><b>수집·적재.</b> CSV 를 헤더로 판별해 메모리 DB 에 넣고, 월별 파일은 이어 붙이며 중복은 거릅니다.</div>
+    <b>2</b><div><b>사람과 돈, 단위 맞추기.</b> 카드 이용자구분과 유동인구 국적을 맞추고(중국↔CHN 등), 카드(법정동)와 유동인구·봉투(행정동)는 7개 권역에서 결합합니다. 관광공사 소비·방문객은 같은 읍면동 이름이라 동 단위로 바로 겹칩니다.</div>
+  </div>
+  <h3>이용조건과 반출 가드</h3>
+  <table>
+    <tr><th style="width:30%">반출 정책 (2026.9.1)</th><th>구현</th></tr>
+    <tr><td>원본·발췌 반출 불가</td><td>LLM 과 보고서에 원본 행을 넘기지 않음. CSV 를 읽는 도구가 없음</td></tr>
+    <tr><td>단순집계 10 미만 불가 / 응용집계 가능</td><td>범주처리·삭제처리·역산 방지. 모든 지표를 증감률·비율·지수로 제공하고 근거 10 미만은 가림. 차트는 PNG, 출처 자동 표기</td></tr>
+  </table>
+  <p class="note">외부 자료: 제주도 크루즈선 입항실적(공공저작물), 제주관광협회 입도통계(확정치), 관광공사 빅데이터플랫폼(소비 공공누리 1유형), 소상공인 상가정보, 크루즈 입항실적, 입도통계, Terrain Tiles·OpenStreetMap(ODbL)·Kenney(CC0)·위키미디어 공용 장소 사진(CC BY 등)은 화면용.</p>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>11</span></div>
+</section>
+
+<section class="page">
+  <h2><small>5. 개발·탑재 계획</small>센터 PC 에서 그대로 돌아가게</h2>
+  <h3 style="margin-top:0">구현 범위</h3>
+  <table>
+    <tr><th>항목</th><th style="width:17%">상태</th></tr>
+    <tr><td>CSV 식별·적재, 데이터 안내, 낙수 지표 12종, 주의 지역 강조·종합, 반출 가드, 수치 대조</td><td><span class="tag done">구현</span></td></tr>
+    <tr><td>Agent 루프, 도구, 기본 모드, 3D 화면, 보고서(PDF, PNG, 반출 참고), 크루즈 실적·입도통계 수집 도구, 센터 CSV 점검 도구</td><td><span class="tag done">구현</span></td></tr>
+    <tr><td>관광공사 소비·방문객, 상가 매장 수 실데이터 내장 / 자동 테스트 100개 / 평가셋 10문항</td><td><span class="tag done">통과</span></td></tr>
+    <tr><td>Windows 11 실기 시험, 실제 센터 CSV 시험</td><td><span class="tag todo">미확인</span></td></tr>
+    <tr><td>2025년 6월 이후 크루즈 실적, 2026년 9월 이후 입도통계(아직 미게시)</td><td><span class="tag todo">미포함</span></td></tr>
+  </table>
+  <h3>기술 환경</h3>
+  <p>로컬 서버(FastAPI)에 브라우저로 접속하는 구조로, 운영진이 안내한 방식입니다. 분석은 DuckDB 와 pandas 로 메모리에서 처리하고, 화면은 three.js 를 외부 CDN 없이 프로그램에 포함했습니다. 보고서는 matplotlib, ReportLab, 맑은 고딕으로 만듭니다.</p>
+  <h3>센터 실행환경</h3>
+  <table>
+    <tr><th style="width:27%">항목</th><th>내용</th></tr>
+    <tr><td><b>대상 사양</b></td><td>Windows 11, i7-8700, GTX 1060, RAM 32GB, Chrome/Edge, 1920×1080</td></tr>
+    <tr><td><b>설치 프로그램</b></td><td>Python 3.12 (64비트)만 설치. 패키지 37개(duckdb, pandas, fastapi, matplotlib, reportlab, anthropic 등)는 <code>wheels/</code> 에 동봉해 인터넷 없이 설치</td></tr>
+        <tr><td><b>실행</b></td><td>run.bat 더블클릭, 브라우저 자동 실행</td></tr>
+    <tr><td><b>API 키</b></td><td><code>.env</code> 에 설정. 평가용 키는 한도를 걸어 제출 zip 에 넣고, 탑재 뒤 센터 담당자가 바꿈</td></tr>
+    <tr><td><b>별도 권한</b></td><td>서명 없는 확장 모듈 96개(11개 패키지)는 <code>.venv\</code> 허용 등록 필요. 경로 목록 제출</td></tr>
+    <tr><td><b>보존 데이터</b></td><td>없음. 데이터는 메모리에만 있고 프로그램 종료 시 사라짐. 올린 CSV 는 적재 직후 삭제</td></tr>
+  </table>
+  <h3>외부 서비스 의존성</h3>
+  <table>
+    <tr><th style="width:35%">주소</th><th style="width:35%">용도</th><th>막혔을 때</th></tr>
+    <tr><td><code>api.anthropic.com</code></td><td>Claude API. 실행 중 쓰는 유일한 외부 주소</td><td>기본 모드 동작</td></tr>
+    <tr><td><code>pypi.org</code>, <code>files.pythonhosted.org</code></td><td>(선택) 동봉한 <code>wheels/</code> 가 없을 때만 첫 설치 때 패키지 내려받기</td><td>동봉 패키지로 설치</td></tr>
+    <tr><td><code>www.jeju.go.kr</code>, <code>www.visitjeju.or.kr</code></td><td>(선택) 크루즈 실적·입도통계를 다시 받을 때만</td><td>프로그램에 든 자료 사용</td></tr>
+  </table>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>12</span></div>
+</section>
+
+<section class="page">
+  <h2><small>6. 검증과 한계</small>결과를 믿을 수 있게 만든 장치</h2>
+  <div class="two">
+    <div><img class="shot" src="../assets/app_tourism.png" alt="읍면동 낙수 지수 화면"></div>
+    <div>
+      <h3 style="margin-top:0">실제 호출 시험 결과</h3>
+      <p><b>자동 브리핑(실데이터 2026.9)</b>: 질문 없이 Agent 가 계획을 쓰고 도구를 10번 불러 봉개동·이도2동·추자면을 찾았습니다. 추이와 업종을 스스로 나눠 "방문객은 늘었는데 숙박에서 소비가 빠졌다(봉개동 −32.2%)"고 짚고, 표본이 적은 추자면은 판단을 미뤘습니다.</p>
+      <p class="note">55초, 약 $0.21, 수치 36개 모두 검증 통과.</p>
+    </div>
+  </div>
+  <h3>검증 방법</h3>
+  <table>
+    <tr><th style="width:27%">항목</th><th style="width:45%">방법</th><th>결과</th></tr>
+    <tr><td><b>자동 테스트</b></td><td>적재, 공개 데이터 대체, 가드, 지표 12종, Agent 루프, 보고서</td><td>100개 통과</td></tr>
+    <tr><td><b>지표 검산</b></td><td>손으로 계산한 작은 표로 메움률 25%, 낙수 지수 1.5/0.5, 크루즈 효과 50%, 1인당 소비 -20% 등 확인</td><td>일치</td></tr>
+    <tr><td><b>장애 대응</b></td><td>키 없음, 인증 오류, 접속 실패, 거절, 단계 초과</td><td>기본 모드 전환 (가짜 응답 시험)</td></tr>
+    <tr><td><b>평가셋 10문항</b></td><td>지표 선택, 동네·달·업종, 안내 문구, 답의 수치가 계산 결과에 있는지 코드로 검사 (실데이터 2026.9)</td><td>실제 호출 10/10 ($1.31), 기본 모드 10/10</td></tr>
+  </table>
+  <h3>한계 (있는 그대로)</h3>
+  <ul class="limits">
+    <li><b>센터 CSV 미검증</b>: 센터 데이터는 가상 데이터로 시험했고, 공개된 카드(1-08) 실제 머리글로 적재만 확인했습니다.</li>
+    <li><b>비씨카드 범위</b>: 해외 간편결제와 현금이 빠져 외국인 소비가 적게 잡힐 수 있어 추이로 읽어야 합니다.</li>
+    <li><b>월 단위</b>: 크루즈 입항일의 효과를 직접 가르지 못하고, 기항 효과와 낙수 지수는 상관·비율이지 인과가 아닙니다.</li>
+    <li><b>공개 자료 범위</b>: 크루즈는 2025년 5월, 입도통계는 2026년 9월까지 게시되어 그 뒤 달은 이용자가 넣어야 합니다. 도민 가게 몫은 매장 수 비중으로 나눈 추정입니다.</li>
+    <li><b>Windows 미검증</b>: macOS 에서 개발했습니다. 제출 zip 을 새 폴더에 풀어 처음부터 설치·실행하는 시험은 macOS 에서 통과했지만, run.bat·맑은 고딕 출력·3D 성능은 Windows 확인이 필요합니다.</li>
+    <li><b>지도·기본 모드</b>: 동네 위치는 대략 좌표이고, 기본 모드는 단어 규칙이라 복잡한 질문은 풀지 못합니다.</li>
+  </ul>
+  <h3>PLaiJeju 가 다른 점</h3>
+  <table class="tight">
+    <tr><th style="width:27%">다른 점</th><th>설명</th></tr>
+    <tr><td><b>말이 아니라 계산으로</b></td><td>숫자는 모두 코드가 계산하고, 답의 수치를 계산 결과와 대조해 근거 없는 수치는 되돌립니다(실제 호출 201/201)</td></tr>
+    <tr><td><b>센터 데이터 없이도 실데이터</b></td><td>공개 실데이터 5종을 넣어 두어 첫 실행부터 지표 8종을 실제 값으로 보고, 센터 CSV 를 넣으면 12종이 됩니다</td></tr>
+    <tr><td><b>반출 기준을 처음부터</b></td><td>10 미만 가림, 응용집계만 Claude·보고서로. 반출 신청 참고 문서까지 같이 만듭니다</td></tr>
+    <tr><td><b>인과를 함부로 말하지 않음</b></td><td>크루즈 효과 보정·기대 대비 실제로 섬 전체 추세를 걷어 내고, 뚜렷하지 않으면 그렇다고 말합니다</td></tr>
+    <tr><td><b>키가 없어도 끝까지</b></td><td>API 가 막히면 같은 지표·지도·보고서를 규칙 기반 기본 모드로 그대로 씁니다</td></tr>
+  </table>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>13</span></div>
+</section>
+
+<section class="page">
+  <h2><small>7. 센터 활용 방안</small>관광 논쟁의 근거를 만드는 창구로</h2>
+  <p class="lead">"배는 오는데 돈은 안 온다"는 말은 많지만 동네 단위 근거는 없었습니다. 센터를 찾는 담당자와 의원실, 관광업계가 그 근거를 반출 기준에 맞춰 바로 받아 가게 합니다.</p>
+  <table>
+    <tr><th style="width:27%">이용자</th><th style="width:40%">이렇게 씁니다</th><th>얻는 것</th></tr>
+    <tr><td><b>도·시 관광 담당자</b></td><td>"크루즈 소비가 면세점 밖으로 얼마나 나갔나요?"</td><td>행정사무감사 답변 근거, 분산 정책 대상 상권</td></tr>
+    <tr><td><b>도의회·연구기관</b></td><td>권역별 낙수 지수와 메움률 추이</td><td>출처가 붙은 현황자료, 용역 전 탐색</td></tr>
+    <tr><td><b>관광공사·업계</b></td><td>소비가 비는 동네와 접근성 비교</td><td>체류형·마을 관광 후보지</td></tr>
+    <tr><td><b>상권·소상공인</b></td><td>"우리 동네에 외국인 돈이 늘었나요?"</td><td>동네와 업종의 외국인 소비 변화</td></tr>
+    <tr><td><b>센터</b></td><td>반출 기준에 맞춘 산출물과 사유 초안 접수</td><td>반출 재요청 감소 기대</td></tr>
+  </table>
+  <h3>운영 방안</h3>
+  <ul>
+    <li><b>비용 관리</b>: 질문 1건 수 센트에서 수십 센트 수준으로 측정·예상됩니다. 모델과 추론 강도를 환경변수로 바꿀 수 있고, 토큰 사용량이 명령창에 표시됩니다.</li>
+    <li><b>보안</b>: 원본은 외부로 나가지 않습니다. DLP 등으로 외부 호출이 막히면 기본 모드로 동작합니다.</li>
+    <li><b>유지보수</b>: 명세서가 개정되면 파일을 바꾸고 스크립트만 다시 실행합니다. 크루즈 실적은 수집 도구로 갱신합니다.</li>
+    <li><b>데이터 삭제 원칙</b>: 메모리에만 두므로 종료와 함께 사라지며, 별도 보존 대상이 없습니다.</li>
+  </ul>
+  <h3>확장 계획</h3>
+  <table>
+    <tr><th style="width:27%">단계</th><th>내용</th></tr>
+    <tr><td><b>탑재 직후</b></td><td>Windows 실기 확인, 실제 CSV 로 지표 검증, 센터 담당자 설치 지원</td></tr>
+    <tr><td><b>다음 단계</b></td><td>공공와이파이 이용(국적별)으로 외국인 동선 추가, 외식업 포스 메뉴 데이터로 업종 세분, 관광공사 플랫폼 크루즈·국가별 CSV 연동</td></tr>
+    <tr><td><b>이후</b></td><td>평가셋을 센터 이용자의 실제 질문으로 늘려 답변 품질 측정, 비용에 맞는 모델 선정</td></tr>
+  </table>
+  <h3>AI 활용 범위와 외부 코드</h3>
+  <p>Agent 실행에 Claude API 를 씁니다. 개발에는 Claude Code(Claude Fable 5.1·5.2, Opus 5.5)를 조사, 설계, 코드와 문서 작성에 활용했습니다. 오픈소스: three.js(MIT), FastAPI(MIT), Uvicorn(BSD), DuckDB(MIT), pandas(BSD), NumPy(BSD 등), matplotlib(PSF 기반), ReportLab(BSD), anthropic SDK(Apache-2.0), Pydantic(MIT), python-dotenv(BSD). 전체 목록은 데이터 활용 명세에 있습니다.</p>
+  <div class="flag" style="margin-top:6mm">외국인 관광객을 평가하는 도구가 아니라, 소비가 어디에 몰리고 어디가 비는지 보는 도구입니다. 답변은 정책 판단을 돕는 참고 자료이며, 공식 통계와 최종 판단은 담당 기관의 몫입니다.</div>
+  <div class="foot"><span>제주 관광 낙수 진단 Agent</span><span>14</span></div>
+</section>
+
+</body>
+</html>

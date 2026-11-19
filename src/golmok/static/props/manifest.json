@@ -1,0 +1,13 @@
+{
+  "tangerineTree": { "file": "tree_fat.glb", "height": 1.0 },
+  "forestPineRound": { "file": "tree_pineRoundA.glb", "height": 1.0 },
+  "forestPineTall": { "file": "tree_pineTallA.glb", "height": 1.0 },
+  "forestBroad": { "file": "tree_default.glb", "height": 1.0 },
+  "forestOak": { "file": "tree_oak.glb", "height": 1.0 },
+  "palm": { "file": "tree_palmDetailedShort.glb", "height": 1.0 },
+  "bush": { "file": "plant_bushLarge.glb", "height": 1.0 },
+  "bushDetailed": { "file": "plant_bushDetailed.glb", "height": 1.0 },
+  "basaltLarge": { "file": "stone_largeA.glb", "height": 1.0, "tint": "#565c60" },
+  "basaltWide": { "file": "stone_largeC.glb", "height": 1.0, "tint": "#4b5155" },
+  "basaltSmall": { "file": "stone_smallA.glb", "height": 1.0, "tint": "#62686c" }
+}
